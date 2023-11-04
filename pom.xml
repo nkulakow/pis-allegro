@@ -24,7 +24,7 @@
 
     <build>
         <sourceDirectory>src/main/java/</sourceDirectory>
-        <testSourceDirectory>src/test/</testSourceDirectory>
+        <testSourceDirectory>src/test/java/</testSourceDirectory>
         <plugins>
             <plugin>
                 <!-- Build an executable JAR -->
