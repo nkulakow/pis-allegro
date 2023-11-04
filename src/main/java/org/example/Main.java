@@ -7,5 +7,5 @@ public class Main {
     }
 
     public static boolean isNumberEven(int number){return number%2==0;}
-
+//testing jenkins - should delete this comment later
 }
