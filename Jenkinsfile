@@ -29,12 +29,12 @@ pipeline {
 				nexusVersion: 'nexus3',
 				protocol: 'http',
 				nexusUrl: NEXUS_URL,
-				groupId: pom.groupId,
-				version: '0.0.1',
+				groupId: 'org.example',
+				version: '1.0-SNAPSHOT',
 				repository: NEXUS_REPO,
 				credentialsId: 'NEXUS_CREDENTIAL',
 				artifacts: [
-						[artifactId: pom.artifactId,
+						[artifactId: 'proba',
 						classifier: '',
 						file: '${pom.artifactId}-${pom.version}.${pom.packaging}',
 						type: 'jar']
