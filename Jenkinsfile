@@ -7,7 +7,7 @@ pipeline {
 	}
 	
 	environment {
-		NEXUS_URL = 'http://localhost:8001'
+		NEXUS_URL = 'localhost:8001'
 		NEXUS_REPO = 'pis-central-repository'
 	}
 	
@@ -24,19 +24,20 @@ pipeline {
 	}
 	stage('Publish to Nexus') {
 		steps {
+			pom = readMavenPom file: 'pom.xml';
 			nexusArtifactUploader(
 				nexusVersion: 'nexus3',
 				protocol: 'http',
 				nexusUrl: NEXUS_URL,
-				groupId: 'org.example',
-				version: '1.0-SNAPSHOT',
+				groupId: pom.groupId,
+				version: '0.0.1',
 				repository: NEXUS_REPO,
 				credentialsId: 'NEXUS_CREDENTIAL',
 				artifacts: [
-					[artifactId: 'proba',
-					classifier: '',
-					file: 'target/proba-1.0-SNAPSHOT.jar',
-					type: 'jar']
+						[artifactId: pom.artifactId,
+						classifier: '',
+						file: 'target/${pom.artifactId}-${pom.version}.${pom.packaging}',
+						type: 'jar']
 					]
 				)
 			}
