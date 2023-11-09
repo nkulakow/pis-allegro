@@ -11,4 +11,3 @@ System działający na podobnej zasadzie jak Allegro.
 - **issues**: Jira
 - **testy**: JUnit
 - **narzędzie do mierzenia pokrycia kodu testami**: JaCoCo
-
