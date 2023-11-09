@@ -24,7 +24,7 @@ pipeline {
 	}
 	stage('Publish to Nexus') {
 		steps {
-			pom = readMavenPom file: 'pom.xml';
+			pom = sh ‘mvn -f ./pom.xml help:evaluate -Dexpression=project -q -DforceStdout’
 			nexusArtifactUploader(
 				nexusVersion: 'nexus3',
 				protocol: 'http',
