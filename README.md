@@ -1,5 +1,5 @@
 # pis-allegro
-System działający na podobnej zasadzie jak Allegro
+System działający na podobnej zasadzie jak Allegro.
 
 ## Wybrane technologie:
 - **język**: Java + Spring
