@@ -35,7 +35,7 @@ pipeline {
 				artifacts: [
 					[artifactId: 'proba',
 					classifier: '',
-					file: 'my-service-1.0-SNAPSHOT.jar',
+					file: 'target/proba-1.0-SNAPSHOT.jar',
 					type: 'jar']
 					]
 				)
