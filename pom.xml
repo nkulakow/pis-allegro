@@ -22,6 +22,14 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <distributionManagement>
+        <repository>
+            <id>nexus-releases</id>
+            <url>https://pis-nexus.serveo.net/repository/nexus-releases/</url>
+        </repository>
+    </distributionManagement>
+
+
     <build>
         <sourceDirectory>src/main/java/</sourceDirectory>
         <testSourceDirectory>src/test/java/</testSourceDirectory>
