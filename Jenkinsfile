@@ -24,7 +24,7 @@ pipeline {
 	}
 	stage('Publish to Nexus') {
 		steps {
-			def pom = sh(script: "mvn -f ./pom.xml help:evaluate -Dexpression=project -q -DforceStdout", returnStdout: true).trim()
+			def pom = sh(script: "mvn -f ./pom.xml help:evaluate -Dexpression=project -q -DforceStdout", returnStdout: true)
 			nexusArtifactUploader(
 				nexusVersion: 'nexus3',
 				protocol: 'http',
