@@ -35,15 +35,15 @@ pipeline {
 					nexusVersion: 'nexus3',
 					protocol: 'http',
 					nexusUrl: NEXUS_URL,
-					groupId: pom.groupId,
-					version: '1.0.0',
+					groupId: 'org.example',
+					version: '1.0-SNAPSHOT',
 					repository: NEXUS_REPO,
 					credentialsId: 'NEXUS_CREDENTIAL',
 					artifacts: [
-						[artifactId: pom.artifactId,
+						[artifactId: 'proba',
 						classifier: '',
-						file: artifactPath,
-						type: pom.packaging]
+						file: 'my-service-' + version + '.jar',
+						type: 'jar']
 					]
 				);
 			} else {
