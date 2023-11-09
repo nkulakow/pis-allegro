@@ -21,25 +21,25 @@ pipeline {
             steps { 
                sh 'mvn clean package' 
             }
+	}
+	stage('Publish to Nexus') {
+		steps {
+			nexusArtifactUploader(
+				nexusVersion: 'nexus3',
+				protocol: 'http',
+				nexusUrl: 'my.nexus.address',
+				groupId: 'com.example',
+				version: version,
+				repository: 'RepositoryName',
+				credentialsId: 'CredentialsId',
+				artifacts: [
+						[artifactId: 'proba',
+						 classifier: '',
+						 file: 'proba-v1-SNAPSHOT.jar',
+						 type: 'jar']
+					    ]
+			)
 		}
-		stage('Publish to Nexus') {
-			steps {
-				nexusArtifactUploader(
-					nexusVersion: 'nexus3',
-					protocol: 'http',
-					nexusUrl: NEXUS_URL,
-					groupId: 'com.example',
-					version: '1.0.0',
-					repository: NEXUS_REPO,
-					credentialsId: 'NEXUS_CREDENTIAL',
-					artifacts: [
-                        [artifactId: 'proba',
-                         classifier: '',
-                         file: 'proba-v1-SNAPSHOT.jar',
-                         type: 'jar']
-                    ]
-				)
-			}
         }
     }
 }
