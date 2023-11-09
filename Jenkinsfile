@@ -24,7 +24,7 @@ pipeline {
 	}
 	stage('Publish to Nexus') {
 		steps {
-			pom = sh ‘mvn -f ./pom.xml help:evaluate -Dexpression=project -q -DforceStdout’;
+			pom = sh ‘mvn -f ./pom.xml help:evaluate -Dexpression=project -q -DforceStdout’
 			nexusArtifactUploader(
 				nexusVersion: 'nexus3',
 				protocol: 'http',
@@ -39,7 +39,7 @@ pipeline {
 						file: '${pom.artifactId}-${pom.version}.${pom.packaging}',
 						type: 'jar']
 					]
-				);
+				)
 			}
 		}
         }
