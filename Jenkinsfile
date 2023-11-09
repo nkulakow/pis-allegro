@@ -1,5 +1,10 @@
 pipeline { 
     agent any
+
+	tools {
+		maven 'Jenkins-maven'
+		jdk 'openjdk-19'
+	}
 	
 	environment {
 		NEXUS_URL = 'http://localhost:8001'
