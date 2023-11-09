@@ -36,7 +36,7 @@ pipeline {
 				artifacts: [
 						[artifactId: pom.artifactId,
 						classifier: '',
-						file: 'target/${pom.artifactId}-${pom.version}.${pom.packaging}',
+						file: '${pom.artifactId}-${pom.version}.${pom.packaging}',
 						type: 'jar']
 					]
 				);
