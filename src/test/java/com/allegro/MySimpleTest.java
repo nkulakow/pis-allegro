@@ -1,7 +1,11 @@
+package com.allegro;
+
 import org.junit.jupiter.api.Test;
 
-import static org.example.Main.isNumberEven;
 import static org.junit.jupiter.api.Assertions.*;
+
+import static com.allegro.AllegroApplication.isNumberEven;
+
 
 public class MySimpleTest {
     @Test
@@ -11,9 +15,11 @@ public class MySimpleTest {
 
     @Test
     void Number4IsEven() {
-        assertTrue(isNumberEven(4), "Test to check if isNumberEven return true for 4");}
+        assertTrue(isNumberEven(4), "Test to check if isNumberEven return true for 4");
+    }
 
     @Test
     void Number5IsOdd() {
-        assertFalse(isNumberEven(5), "Test to check if isNumberEven return false for 5");}
+        assertFalse(isNumberEven(5), "Test to check if isNumberEven return false for 5");
+    }
 }
