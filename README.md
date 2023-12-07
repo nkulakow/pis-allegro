@@ -17,6 +17,37 @@ System działający na podobnej zasadzie jak Allegro.
 
 ## Przypadki użycia
 
+- Użytkownik chce zacząć sprzedawać rzeczy w serwisie
+  1. Użytkownik rejestruje się podając właśniwe dane
+  2. Użytkownik tworzy nowe ogłoszenie
+  3. Użytkownik dodaje tytuł, opis, cenę i opcjonalnie zdjęcie do ogłoszenia
+  4. Użytkownik tworzy ogłoszenie
+  5. Użytkownik znajduje ogłoszenie na swojej tablicy ogłoszeń
+  - Alternatywne scenariusze
+    - Jeżeli pominie wprowadzenie któregoś z obowiązkowych elementów ogłoszenia (tytuł, opis, cena), to ogłoszenie nie zostaje utworzone i użytkownik musi uzupełnić właściwy element
+- Użytkownik (kupujący) chce kupić produkt
+  1. Kupujący loguje się na swoje konto
+  2. Kupujący wyszukuje produkt w wyszukiwarce
+  3. Kupujący wybiera szukany produkt z wyświetlonej listy
+  4. Kupujący wybiera kupno produktu
+  5. Kupujący wybiera sposób dostawy
+  6. Kupujący wprowadza dane do przelewu w odpowiednim oknie
+  7. Kupujący widzi kupiony przedmiot w swoim inwentarzu
+  8. Sprzedawca dostaje inforamcje o sprzedaży przedmiotu i adresie wysyłki
+  9. Sprzedawca dostaje pieniądze za sprzedaż
+  10. Sprzedawca wysyła przedmiot pod wskazany adres
+    - Alternatywne scenariusze
+      - Jeżeli przelew się nie powiódł, to użytkownik ponawia operacje od punktu 3
+      - Jeżeli przedmiot po dostarczeniu do kupującego okazuje się uszkodzony to kupujący odsyła przedmiot sprzedawcy, a sprzedawca zwraca pieniądze
+- Użytkownik chce zedytować produkt
+  1. Użytkownik loguje się na swoje konto
+  2. Użytkownik otwiera swoją tablicę ogłoszeń
+  3. Użytkownik wybiera dany produkt
+  4. Użytkownik zmienia dane produktu
+  5. Użytkownik zapisuje produkt
+  - Alternatywne scenariusze
+    - Jeżeli użytkownik pominie wprowadzenie któreś z obowiązkowych elementów ogłoszenia (tytuł, opis, cena), to ogłoszenie nie zostaje nadpisane i użytkownik musi uzupełnić właściwy element
+
 
 ## Wymagania niefunkcjonalne
 
