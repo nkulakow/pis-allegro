@@ -11,3 +11,11 @@ System działający na podobnej zasadzie jak Allegro.
 - **issues**: Jira
 - **testy**: JUnit
 - **narzędzie do mierzenia pokrycia kodu testami**: JaCoCo
+
+## Architektura
+![diagram uml](images/architektura.png)
+
+## Przypadki użycia
+
+
+## Wymagania niefunkcjonalne
