@@ -56,19 +56,25 @@ System działający na podobnej zasadzie jak Allegro.
 ### MongoDB  
 **Model danych**:  
   - MongoDB przechowuje dane w postaci dokumentów podobnych do JSON, co zapewnia **dużą elastyczność** i **szybki czas rozwoju**.
-  - Możliwość zgrupowania (podzielenia danych na **kolekcje**) obiektów różniącyh się strukturą. Jest to ważne z punktu widzenia naszego serwisu, gdyż produkty podobnego przeznaczenia mogą bardzo się od siebie różnić (np. zabawki).  
+  - Możliwość zgrupowania (podzielenia danych na **kolekcje**) obiektów różniącyh się strukturą. Jest to ważne z punktu widzenia naszego serwisu, gdyż produkty podobnego przeznaczenia mogą bardzo się od siebie różnić (np. zabawki).
+
 **Obsługa dużej ilości danych**:  
   - MongoDB wykorzystuje **architekturę rozproszoną** co jest korzystne zarówno ze względu na **skalowalność w poziomie**, jak i zapewnienie dużej **niezawodności**.
-  - MongoDB może **równocześnie obsługiwać wiele zapytań**, co zapewni **dużą wydajność** w przypadku korzystania z serwisu przez wielu użytkowników.  
+  - MongoDB może **równocześnie obsługiwać wiele zapytań**, co zapewni **dużą wydajność** w przypadku korzystania z serwisu przez wielu użytkowników.
+
 **Indeksowanie**:  
   - MongoDB pozwala na założenie wielu różnych indeksów. Pozwala to na zorientowanie bazy na zapytania najczęściej wykonywane, a tym samym umożliwia zapewnienie dużej wydajności.
-  - MongoDB pozwala na założenie indeksów tekstowych, co może okazać się bardzo użyteczne podczas impolementacji przeszukiwania pełnotekstowego.  
+  - MongoDB pozwala na założenie indeksów tekstowych, co może okazać się bardzo użyteczne podczas impolementacji przeszukiwania pełnotekstowego.
+
 **Wysoka dostępność**:  
-  - MongoDB zapewnia replikację danych w ramach zestawu replik. Pozwala to na dostęp do przynajmniej części danych nawet w wyniku awarii. Jest to bardzo dobre rozwiązanie dla naszego serwisu, gdyż w przypadku awarii użytkownicy nadal mogą korzystać z serwisu (ewentualnie w ograniczonym zakresie).  
+  - MongoDB zapewnia replikację danych w ramach zestawu replik. Pozwala to na dostęp do przynajmniej części danych nawet w wyniku awarii. Jest to bardzo dobre rozwiązanie dla naszego serwisu, gdyż w przypadku awarii użytkownicy nadal mogą korzystać z serwisu (ewentualnie w ograniczonym zakresie).
+
 **Alternatywy dla implementacji operacji atomowych**:  
   - operacje zapisu są atomowe na poziomie dokumentu nawet jeśli zapis modyfikuje wiele zagnieżdżonych dokumentów wewnątrz jednego dokumentu.
   - polecenia modyfikujące pojedyncze dokumenty są atomowe - i to nam wystarczy.
+
  Może okazać się przydatne przy zapewnianiu spójności między bazami.  
+ 
 ### PostgreSQL
 ...
 
