@@ -69,7 +69,6 @@ System działający na podobnej zasadzie jak Allegro.
   - operacje zapisu są atomowe na poziomie dokumentu nawet jeśli zapis modyfikuje wiele zagnieżdżonych dokumentów wewnątrz jednego dokumentu.
   - polecenia modyfikujące pojedyncze dokumenty są atomowe - i to nam wystarczy.
  Może okazać się przydatne przy zapewnianiu spójności między bazami.  
-...
 ### PostgreSQL
 ...
 
