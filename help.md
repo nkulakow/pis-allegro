@@ -18,9 +18,7 @@ potem wszystko można za pomocą np: dbeaver (https://dbeaver.io/)
 ```bash
 docker pull mongo
 docker network create mongo-net
-docker run -d --name pis-mongo --network mongo-net -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=mongo -e MONGO_INITDB_ROOT_PASSWORD=mypassword mongo:latest --replSet rs0
-docker run -d --name pis-mongo-second --network mongo-net -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=mongo -e MONGO_INITDB_ROOT_PASSWORD=mypassword mongo:latest --replSet rs0
-docker run -d --name pis-mongo-third --network mongo-net -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=mongo -e MONGO_INITDB_ROOT_PASSWORD=mypassword mongo:latest --replSet rs0
+docker run -d --name pis-mongo -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=mongo -e MONGO_INITDB_ROOT_PASSWORD=mypassword mongo:latest 
 docker exec -it pis-mongo mongosh
 ```
 
