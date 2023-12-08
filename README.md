@@ -80,11 +80,31 @@ System działający na podobnej zasadzie jak Allegro.
 
  Może okazać się przydatne przy zapewnianiu spójności między bazami.  
  
-### PostgreSQL
-Podobnie jak MongoDB, PostgreSQL również charakteryzuje się skalowalnością. Ta baza danych jest więc w stanie obsługiwać zarówno rosnące ilości danych, jak i wzrastającą ilość aktywnych użytkowników na raz. Nie powinno być więc problemu ze wzrastającą liczbą produktów (wraz z informacjami o nich) do przechowywania. PostgreSQL wspomaga dodatkowo partycjonowanie, co zwiększa wydajność bazy, gdyby ta miała rozrosnąć się do dużego rozmiaru. Oprócz tego, Postgres charakteryzuje się także wysokim poziomem bezpieczeństwa (m.in. przed niepożądanym odczytem danych) oraz stabilności. Przydatna jest również elastyczność Postgresa, która możliwa jest przez dodawanie i korzystanie z własnych typów danych. PostgreSQL ma również wbudowaną implementację ACID, co zapewnia nam integralność i niezawodność bazy.
+### PostgreSQL  
+**Wsparcie wielu rodzajów danych**:  
+  - W tym tablice wielowymiarowe, które przydają się w przypadku przechowywania wartości wieloczęściowych. Pozwala też na tworzenie własnych typów danych. Może okazać się przydatne przy podziale produktów na kategorie.  
+
+**Bezpieczeństwo i niezawodność**:  
+  - Wspiera kopie zapasowe i replikacje. Podobnie jak w przypadku MongoDB pozwoli to zapewnić możliwość korzystania z serwisu nawet w przypadku awarii.  
+  - Zapewnia liczne zabezpieczenia przed niepożądanym odczytem danych (istotne np. przy logowaniu).  
+
+**Zgodność z ACID**:  
+  - Atomowość, spójność, izolacja i trwałość.  
+
+**Wysoka wydajność**:  
+  - Rozmiar bazy danych jest nieograniczony, ma możliwość partycjonowania. Korzystne z punktu widzenia skalowalności w poziomie.  
+
+**Zaawansowane indeksowanie**:
+  - PostgreSQL oferuje indeksowanie GiST (Generalized Search Tree) które oferuje wiele wydajnych algorytmów na wyszukiwanie i sortowanie.  
+
+**Integralność danych**:
+  - W jej skład wchodzą klucze główne, obce z ograniczeniami i kaskadującymi aktualizacjami/usuwaniami oraz więzy spójności typu check, unique oraz not null.  
+
+**Transakcyjność**:
+  - Ochrona integralności danych na poziomie transakcji.  
 
 ### Zapewnienie spójności między bazami danych
-Zapewnienie spójności między bazami danych będzie kluczowe tak naprawdę jedynie w sytuacji gdy sprzedawca dodaje lub modyfikuje przedmiot. Wpływa to na zmianę w jednej tabeli w bazie PostgreSQL i jednego dokumentu w bazie MongoDB. Z tego powodu zdecydowaliśmy na użycie transakcji, zakładając, że operacja powinna się udać albo całkowicie, albo nie - na co pozwoli adnotacja `@Transacional` nad odpowiednimi metodami (jest odpowiednia dla MongoDB jeśli edytujemy 1 dokument).   
+Zapewnienie spójności między bazami danych będzie kluczowe jedynie w sytuacji gdy sprzedawca dodaje lub modyfikuje przedmiot. Wpływa to na zmianę w jednej tabeli w bazie PostgreSQL i jednego dokumentu w bazie MongoDB. Z tego powodu zdecydowaliśmy na użycie transakcji, zakładając, że operacja powinna się udać albo całkowicie, albo nie - na co pozwoli adnotacja `@Transacional` nad odpowiednimi metodami (jest odpowiednia dla MongoDB jeśli edytujemy 1 dokument).  
 Źródła: 
 - https://www.baeldung.com/spring-data-mongodb-transactions
 - https://stackoverflow.com/questions/72677210/spring-boot-postgresql-and-mongodb-data-sync
