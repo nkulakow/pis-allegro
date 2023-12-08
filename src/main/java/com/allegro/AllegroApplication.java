@@ -1,17 +1,20 @@
 package com.allegro;
 
+import com.allegro.Entity.Student;
+import com.allegro.Repository.StudentRepository;
+import com.allegro.Service.StudentService;
 import com.mongodb.client.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.bson.Document;
 import org.bson.json.JsonWriterSettings;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @SpringBootApplication
@@ -21,12 +24,16 @@ public class AllegroApplication {
         SpringApplication.run(AllegroApplication.class, args);
     }
 
+    @Autowired
+    StudentService studentService;
+
     @RequestMapping("/hello")
     public ModelAndView sayHello(@RequestParam(value = "number", defaultValue = "1") int num) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("hello.html");
         modelAndView.addObject("num", num);
         modelAndView.addObject("even", isNumberEven(num));
+        studentService.addStudent();
         return modelAndView;
     }
 
