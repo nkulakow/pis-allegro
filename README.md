@@ -54,13 +54,21 @@ System działający na podobnej zasadzie jak Allegro.
 
 ## Uzasadnienie wyboru baz danych
 ### MongoDB
-Model danych zorientowany na dokumenty: MongoDB przechowuje dane w postaci dokumentów podobnych do JSON, co pozwala na większą elastyczność i szybszy czas rozwoju oraz przechowywanie różnych atrybutów.   
-Skalowalność: MongoDB wykorzystuje architekturę rozproszoną i obsługuje skalowanie poziome, co oznacza, że może obsługiwać rosnące ilości danych oraz obciążenia związane z odczytem i zapisem bez konieczności kosztownej modernizacji sprzętu.   
-Wysoka dostępność: MongoDB zawiera wbudowane funkcje automatycznego przełączania awaryjnego i zestawów replik, zapewniając, że baza danych pozostaje dostępna i dostępna podczas awarii sprzętu lub innych zakłóceń.   
-Indeksowanie: MongoDB obsługuje indeksowanie, aby poprawić wydajność zapytań i wyszukiwań, dzięki czemu szybciej i łatwiej zlokalizować określone dokumenty w ramach kolekcji.    
-Zapewnia pewne alternatywy dla implementacji operacji atomowych: 
-  - operacje zapisu są atomowe na poziomie dokumentu nawet jeśli zapis modyfikuje wiele zagnieżdżonych dokumentów wewnątrz jednego dokumentu
-  - polecenia modyfikujące pojedyncze dokumenty są atomowe - i to nam wystarczy
+**Model danych**:
+- MongoDB przechowuje dane w postaci dokumentów podobnych do JSON, co zapewnia **dużą elastyczność** i **szybki czas rozwoju**.
+- Możliwość zgrupowania (podzielenia danych na **kolekcje**) obiektów różniącyh się strukturą. Jest to ważne z punktu widzenia naszego serwisu, gdyż produkty podobnego przeznaczenia mogą bardzo się od siebie różnić (np. zabawki).  
+**Obsługa dużej ilości danych**
+- MongoDB wykorzystuje **architekturę rozproszoną** co jest korzystne zarówno ze względu na **skalowalność w poziomie**, jak i zapewnienie dużej **niezawodności**.
+- MongoDB może **równocześnie obsługiwać wiele zapytań**, co zapewni **dużą wydajność** w przypadku korzystania z serwisu przez wielu użytkowników.  
+**Indeksowanie**:
+- MongoDB pozwala na założenie wielu różnych indeksów. Pozwala to na zorientowanie bazy na zapytania najczęściej wykonywane, a tym samym umożliwia zapewnienie dużej wydajności.
+- MongoDB pozwala na założenie indeksów tekstowych, co może okazać się bardzo użyteczne podczas impolementacji przeszukiwania pełnotekstowego.  
+**Wysoka dostępność**:  
+- MongoDB zapewnia replikację danych w ramach zestawu replik. Pozwala to na dostęp do przynajmniej części danych nawet w wyniku awarii. Jest to bardzo dobre rozwiązanie dla naszego serwisu, gdyż w przypadku awarii użytkownicy nadal mogą korzystać z serwisu (ewentualnie w ograniczonym zakresie).  
+**Alternatywy dla implementacji operacji atomowych**: 
+  - operacje zapisu są atomowe na poziomie dokumentu nawet jeśli zapis modyfikuje wiele zagnieżdżonych dokumentów wewnątrz jednego dokumentu.
+  - polecenia modyfikujące pojedyncze dokumenty są atomowe - i to nam wystarczy.
+ Może okazać się przydatne przy zapewnianiu spójności między bazami.  
 ...
 ### PostgreSQL
 ...
