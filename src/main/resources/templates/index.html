@@ -7,14 +7,20 @@
 <body>
 <!--<p><a href="/hello">Greet the world!</a></p>-->
 
-<form action="/hello" method="GET" id="numberForm">
+<form action="/hello" method="GET" id="productForm">
     <div>
-        <label for="numberField">Give me a number</label>
-        <input name="number" id="numberField">
+        ADD PRODUCT
+        <label for="nameField">Add name</label>
+        <input name="name" id="nameField">
+        <label for="categoryField">Add category</label>
+        <input name="category" id="categoryField">
         <button>Send!</button>
     </div>
     <h1>Database Information</h1>
+    <h2>Products in database:</h2>
     <p th:text="${info}"></p>
+
 </form>
+
 </body>
 </html>

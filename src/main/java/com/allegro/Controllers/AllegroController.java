@@ -1,10 +1,7 @@
 package com.allegro.Controllers;
 
-import com.allegro.Entity.Student;
-import com.allegro.Service.StudentService;
-import com.mongodb.client.*;
-import org.bson.Document;
-import org.bson.json.JsonWriterSettings;
+import com.allegro.Entity.Product;
+import com.allegro.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,15 +15,15 @@ public class AllegroController {
 
 
     @Autowired
-    StudentService studentService;
+    ProductService productService;
 
     @RequestMapping("/hello")
-    public ModelAndView sayHello(@RequestParam(value = "number", defaultValue = "1") int num) {
+    public ModelAndView sayHello(@RequestParam(value = "name", defaultValue = "name") String name, @RequestParam(value = "category", defaultValue = "cat") String cat) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("hello.html");
-        modelAndView.addObject("num", num);
-        modelAndView.addObject("even", isNumberEven(num));
-        studentService.addStudent();
+        modelAndView.addObject("name", name);
+        modelAndView.addObject("cat", cat);
+        productService.addStudent(name, cat);
         return modelAndView;
     }
 
@@ -36,10 +33,10 @@ public class AllegroController {
         modelAndView.setViewName("index.html");
 
         String info = "";
-        List<Student> listOfStudents = studentService.getStudents();
-        for (Student student : listOfStudents
+        List<Product> listOfProducts = productService.getStudents();
+        for (Product product : listOfProducts
              ) {
-            info = info.concat(student.toString());
+            info = info.concat(product.toString());
             info = info.concat(",");
         }
         modelAndView.addObject("info", info);
