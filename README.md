@@ -50,7 +50,12 @@ System działający na podobnej zasadzie jak Allegro.
 
 
 ## Wymagania niefunkcjonalne
-
+- System musi charakteryzować się wysoką wydajnością, zapewniającą szybkie ładowanie stron, zdjęć oraz innych danych, a także szybkie oraz poprawnie działające wyszukiwanie pełnotekstowe.
+- System powinien mieć intuicyjny dla użytkowników oraz "przyjazny dla oka" interfejs.
+- Serwis musi być zabezpieczony przed atakami typu bruce-force, XSS czy SQL Injection.
+- Serwis musi zapewniać wysoki poziom bezpieczeństwa danych użytkowników.
+- System powinien być skalowalny, zapewniając tym samym równoczesny dostęp do serwisu wielu użytkownikom na raz.
+- Baza danych serwisu musi być w stanie przechowywać wiele produktów wraz z informacjami o nich, ich zdjęciami, opiniami użytkowników.
 
 ## Uzasadnienie wyboru baz danych
 ### MongoDB  
@@ -76,7 +81,7 @@ System działający na podobnej zasadzie jak Allegro.
  Może okazać się przydatne przy zapewnianiu spójności między bazami.  
  
 ### PostgreSQL
-...
+Podobnie jak MongoDB, PostgreSQL również charakteryzuje się skalowalnością. Ta baza danych jest więc w stanie obsługiwać zarówno rosnące ilości danych, jak i wzrastającą ilość aktywnych użytkowników na raz. Nie powinno być więc problemu ze wzrastającą liczbą produktów (wraz z informacjami o nich) do przechowywania. PostgreSQL wspomaga dodatkowo partycjonowanie, co zwiększa wydajność bazy, gdyby ta miała rozrosnąć się do dużego rozmiaru. Oprócz tego, Postgres charakteryzuje się także wysokim poziomem bezpieczeństwa (m.in. przed niepożądanym odczytem danych) oraz stabilności. Przydatna jest również elastyczność Postgresa, która możliwa jest przez dodawanie i korzystanie z własnych typów danych. PostgreSQL ma również wbudowaną implementację ACID, co zapewnia nam integralność i niezawodność bazy.
 
 ### Zapewnienie spójności między bazami danych
 Zapewnienie spójności między bazami danych będzie kluczowe tak naprawdę jedynie w sytuacji gdy sprzedawca dodaje lub modyfikuje przedmiot. Wpływa to na zmianę w jednej tabeli w bazie PostgreSQL i jednego dokumentu w bazie MongoDB. Z tego powodu zdecydowaliśmy na użycie transakcji, zakładając, że operacja powinna się udać albo całkowicie, albo nie - na co pozwoli adnotacja `@Transacional` nad odpowiednimi metodami (jest odpowiednia dla MongoDB jeśli edytujemy 1 dokument).   
