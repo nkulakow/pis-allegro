@@ -109,4 +109,9 @@ Zapewnienie spójności między bazami danych będzie kluczowe jedynie w sytuacj
 - https://www.baeldung.com/spring-data-mongodb-transactions
 - https://stackoverflow.com/questions/72677210/spring-boot-postgresql-and-mongodb-data-sync
 - https://medium.com/javarevisited/database-isolation-level-with-postgresql-and-spring-boot-c6c2f8fe3b46
-Innym problemem może być wyświetlanie produktów jeśli baza mongodb padnie (jeśli coś stanie się z postgresql aplikacja niestety się nie przyda). Wtedy należałoby wyświetlić odpowiedni komunikat o błędzie oraz produkty bez ich zdjęć, ocen czy opisów.
+
+### Awarie  
+  - W przypadku awarii PostgreSQL, serwis nie będzie działać.  
+  - W przypadku awarii MongoDB serwis nie będzie wyświetlać informacji z MongoDB, np. obrazu (tylko informacjie z PostgreSQL).  
+  - W przypadku każdej awarii użytkownik będzie o niej informowany stosownym komunikatem.  
+
