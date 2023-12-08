@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import static com.allegro.AllegroApplication.isNumberEven;
+import static com.allegro.Controllers.AllegroController.isNumberEven;
 
 
 public class MySimpleTest {
