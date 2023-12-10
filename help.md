@@ -14,7 +14,7 @@ powinno się pojawić pis
 
 potem wszystko można za pomocą np: dbeaver (https://dbeaver.io/)
 
-## MONGO
+## MONGO bez replik jeśli nie chcemy transakcji
 ```bash
 docker pull mongo
 docker run -d --name pis-mongo -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=mongo -e MONGO_INITDB_ROOT_PASSWORD=mypassword mongo:latest 
@@ -45,7 +45,7 @@ pis       8.00 KiB
 ```
 potem wszystko można za pomocą: MongoDB Compass (https://www.mongodb.com/docs/compass/master/install/)
 
-## NOWA WERSJA MONGO
+## MONGO - wersja aktualna, jeśli chcemy transakcje
 ```bash
 docker pull mongo:5
 docker network create mongoCluster
