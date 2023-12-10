@@ -2,6 +2,7 @@ package com.allegro.Service;
 
 import com.allegro.Entity.PostgresProduct;
 import com.allegro.Repository.PostgresProductRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ public class PostgresProductService {
         this.repository  = repository;
     }
 
+    @Transactional
     public void addProduct(String name, String description){
         PostgresProduct product = new PostgresProduct(name, description);
         repository.save(product);

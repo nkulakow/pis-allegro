@@ -2,6 +2,7 @@ package com.allegro.Service;
 
 import com.allegro.Entity.Product;
 import com.allegro.Repository.ProductRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,7 @@ public class ProductService {
     @Autowired
     ProductRepository productRepository;
 
+    @Transactional
     public void addProduct(String name, String category){
         Product product = new Product(name, category);
         productRepository.insert(product);
