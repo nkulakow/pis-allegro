@@ -14,7 +14,6 @@ public class ProductService {
     @Autowired
     ProductRepository productRepository;
 
-    @Transactional
     public void addProduct(String name, String category){
         Product product = new Product(name, category);
         productRepository.insert(product);

@@ -4,6 +4,7 @@ import com.allegro.Entity.PostgresProduct;
 import com.allegro.Entity.Product;
 import com.allegro.Service.PostgresProductService;
 import com.allegro.Service.ProductService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,6 +27,7 @@ public class AllegroController {
     PostgresProductService postgresProductService;
 
     @RequestMapping("/hello")
+    @Transactional
     public ModelAndView sayHello(@RequestParam(value = "name", defaultValue = "name") String name, @RequestParam(value = "category", defaultValue = "cat") String cat) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("hello.html");
