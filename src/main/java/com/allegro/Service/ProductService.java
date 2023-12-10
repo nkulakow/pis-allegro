@@ -13,12 +13,12 @@ public class ProductService {
     @Autowired
     ProductRepository productRepository;
 
-    public void addStudent(String name, String category){
+    public void addProduct(String name, String category){
         Product product = new Product(name, category);
         productRepository.insert(product);
     }
 
-    public List<Product> getStudents(){
+    public List<Product> getProducts(){
         return productRepository.findAll();
     }
 }
