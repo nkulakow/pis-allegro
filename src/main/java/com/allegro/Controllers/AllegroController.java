@@ -1,18 +1,14 @@
 package com.allegro.Controllers;
 
+import com.allegro.Entity.MongoProduct;
 import com.allegro.Entity.PostgresProduct;
-import com.allegro.Entity.Product;
-import com.allegro.Service.PostgresProductService;
 import com.allegro.Service.ProductService;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -23,18 +19,13 @@ public class AllegroController {
     ProductService productService;
 
 
-    @Autowired
-    PostgresProductService postgresProductService;
-
     @RequestMapping("/hello")
-    @Transactional
     public ModelAndView sayHello(@RequestParam(value = "name", defaultValue = "name") String name, @RequestParam(value = "category", defaultValue = "cat") String cat) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("hello.html");
         modelAndView.addObject("name", name);
         modelAndView.addObject("cat", cat);
         productService.addProduct(name, cat);
-        postgresProductService.addProduct(name, cat);
         return modelAndView;
     }
 
@@ -44,13 +35,13 @@ public class AllegroController {
         modelAndView.setViewName("index.html");
 
         String info = "MONGODB: ";
-        List<Product> listOfProducts = productService.getProducts();
-        for (Product product : listOfProducts
+        List<MongoProduct> listOfMongoProducts = productService.getMongoProducts();
+        for (MongoProduct mongoProduct : listOfMongoProducts
              ) {
-            info = info.concat(product.toString());
+            info = info.concat(mongoProduct.toString());
             info = info.concat(",");
         }
-        List<PostgresProduct> postgresProductList = postgresProductService.getProducts();
+        List<PostgresProduct> postgresProductList = productService.getPostgresProducts();
         info = info.concat("/n POSTGRESQL: ");
         for (PostgresProduct product: postgresProductList){
             info = info.concat(product.toString());

@@ -6,19 +6,19 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @Document
-public class Product {
+public class MongoProduct {
     @Id
     private String id;
     private String name;
-    private String category;
+    private String description;
 
-    public Product(String name, String category) {
+    public MongoProduct(String name, String description) {
         this.name = name;
-        this.category = category;
+        this.description = description;
     }
 
     @Override
     public String toString() {
-        return this.name + " " + this.category;
+        return this.name + " " + this.description;
     }
 }

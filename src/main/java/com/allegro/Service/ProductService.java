@@ -1,7 +1,9 @@
 package com.allegro.Service;
 
-import com.allegro.Entity.Product;
-import com.allegro.Repository.ProductRepository;
+import com.allegro.Entity.MongoProduct;
+import com.allegro.Entity.PostgresProduct;
+import com.allegro.Repository.PostgresProductRepository;
+import com.allegro.Repository.MongoProductRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,14 +14,29 @@ import java.util.List;
 public class ProductService {
 
     @Autowired
-    ProductRepository productRepository;
+    MongoProductRepository mongoProductRepository;
 
-    public void addProduct(String name, String category){
-        Product product = new Product(name, category);
-        productRepository.insert(product);
+    @Autowired
+    private final PostgresProductRepository postgresProductRepository;
+
+    @Autowired
+    ProductService(PostgresProductRepository repository){
+        this.postgresProductRepository  = repository;
     }
 
-    public List<Product> getProducts(){
-        return productRepository.findAll();
+    @Transactional
+    public void addProduct(String name, String category){
+        PostgresProduct postgresProduct = new PostgresProduct(name, category);
+        postgresProductRepository.save(postgresProduct);
+        MongoProduct mongoProduct = new MongoProduct(name, category);
+        mongoProductRepository.insert(mongoProduct);
+    }
+
+    public List<MongoProduct> getMongoProducts(){
+        return mongoProductRepository.findAll();
+    }
+
+    public List<PostgresProduct> getPostgresProducts (){
+        return this.postgresProductRepository.findAll();
     }
 }
