@@ -3,25 +3,13 @@ package com.allegro.Entity;
 import lombok.Data;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.GenericGenerator;
 
 @Data
 @Entity
-@Table(name = "postgresproduct")
+@Table(name = "product")
 public class PostgresProduct {
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator",
-            parameters = {
-                    @org.hibernate.annotations.Parameter(
-                            name = "uuid_gen_strategy_class",
-                            value = "org.hibernate.id.uuid.CustomVersionOneStrategy"
-                    )
-            }
-    )
-    @Column(name = "id", columnDefinition = "VARCHAR(36)")
+    @Column
     private String id;
 
     @Column
@@ -33,7 +21,8 @@ public class PostgresProduct {
     public PostgresProduct() {
     }
 
-    public PostgresProduct(String name, String description) {
+    public PostgresProduct(String id, String name, String description) {
+        this.id = id;
         this.name = name;
         this.description = description;
     }
