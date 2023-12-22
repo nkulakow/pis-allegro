@@ -15,13 +15,14 @@ import java.util.List;
 public class ProductService {
 
     @Autowired
-    MongoProductRepository mongoProductRepository;
+    private final MongoProductRepository mongoProductRepository;
 
     @Autowired
     private final PostgresProductRepository postgresProductRepository;
 
     @Autowired
-    ProductService(PostgresProductRepository repository){
+    ProductService(MongoProductRepository mongoProductRepository, PostgresProductRepository repository){
+        this.mongoProductRepository = mongoProductRepository;
         this.postgresProductRepository  = repository;
     }
 
