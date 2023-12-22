@@ -1,6 +1,7 @@
 package com.allegro.Service;
 
-import com.allegro.Entity.MongoProduct;
+import com.allegro.DTO.ProductDTO;
+import com.allegro.Document.MongoProduct;
 import com.allegro.Entity.PostgresProduct;
 import com.allegro.Repository.MongoProductRepository;
 import com.allegro.Repository.PostgresProductRepository;
@@ -11,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -41,11 +43,13 @@ public class ProductServiceTest {
         String name = "TestProduct";
         String category = "TestCategory";
         String generatedId = "generatedId";
+        float price = 2.3F;
+        String description = "Test desc";
 
-        when(postgresProductRepository.save(any(PostgresProduct.class))).thenReturn(new PostgresProduct(generatedId, name, category));
-        when(mongoProductRepository.insert(any(MongoProduct.class))).thenReturn(new MongoProduct(generatedId, name, category));
+        when(postgresProductRepository.save(any(PostgresProduct.class))).thenReturn(new PostgresProduct(generatedId, name, category, price));
+        when(mongoProductRepository.insert(any(MongoProduct.class))).thenReturn(new MongoProduct(generatedId, name, description));
 
-        productService.addProduct(name, category);
+        productService.addProduct(name, category, price, description);
 
         verify(postgresProductRepository, times(1)).save(any(PostgresProduct.class));
         verify(mongoProductRepository, times(1)).insert(any(MongoProduct.class));
@@ -61,5 +65,21 @@ public class ProductServiceTest {
         List<MongoProduct> actualMongoProducts = productService.getMongoProducts();
 
         assertEquals(expectedMongoProducts, actualMongoProducts);
+    }
+
+    @Test
+    void getProductsTest(){
+        List<MongoProduct> expectedMongoProducts = Arrays.asList(new MongoProduct("1", "Product1", "desc1"),
+                new MongoProduct("2", "Product2", "desc2"));
+        List<PostgresProduct> expectedPostgresProducts = Arrays.asList(new PostgresProduct("1", "Product1", "Category1", 1.3F),
+                new PostgresProduct("2", "Product2", "Category2", 4F));
+
+        when(mongoProductRepository.findAll()).thenReturn(expectedMongoProducts);
+        when(postgresProductRepository.findAll()).thenReturn(expectedPostgresProducts);
+
+        ArrayList<ProductDTO> actualProducts = productService.getProducts();
+
+        assertEquals(actualProducts.size(), 2);
+        assertEquals(actualProducts.get(0).getName(), "Product1");
     }
 }

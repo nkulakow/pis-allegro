@@ -1,6 +1,6 @@
 package com.allegro.Controllers;
 
-import com.allegro.Entity.MongoProduct;
+import com.allegro.Document.MongoProduct;
 import com.allegro.Entity.PostgresProduct;
 import com.allegro.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class AllegroController {
         modelAndView.setViewName("hello.html");
         modelAndView.addObject("name", name);
         modelAndView.addObject("cat", cat);
-        productService.addProduct(name, cat);
+        productService.addProduct(name, cat, 123, "default description");
         return modelAndView;
     }
 
