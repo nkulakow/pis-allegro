@@ -14,37 +14,6 @@ powinno się pojawić pis
 
 potem wszystko można za pomocą np: dbeaver (https://dbeaver.io/)
 
-## MONGO bez replik jeśli nie chcemy transakcji
-```bash
-docker pull mongo
-docker run -d --name pis-mongo -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=mongo -e MONGO_INITDB_ROOT_PASSWORD=mypassword mongo:latest 
-docker exec -it pis-mongo mongosh
-```
-
-test czy działa:
-```bash
-show dbs
-```
-ma się pokazac:
-```bash
-admin    8.00 KiB
-config  12.00 KiB
-local    8.00 KiB
-```
-koniec testu
-```bash
-use admin
-db.auth("mongo", "mypassword")
-use pis
-db.testing.insertOne({name: "Ada", age: 205})
-show dbs
-```
-teraz powinno się tam pojawić:
-```bash
-pis       8.00 KiB
-```
-potem wszystko można za pomocą: MongoDB Compass (https://www.mongodb.com/docs/compass/master/install/)
-
 ## MONGO - wersja aktualna, jeśli chcemy transakcje
 ```bash
 docker pull mongo:5
@@ -72,3 +41,11 @@ show dbs
 ```
 powinna się pojawić baza danych o nazwie pis.  
 
+## MONGO - po pierwszym mvn install
+Trzeba zrobić indeks na product:
+```bash
+docker exec -it pis-mongo mongosh
+use pis
+db.product.createIndex({ name: "text", description: "text" })
+```
+!!! to działa tylko dla angielskiego języka. apkę zatem dla ułatwienia zróbmy po angielsku.

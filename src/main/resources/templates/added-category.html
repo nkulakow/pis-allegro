@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Hello Page</title>
+  <title>Added Category</title>
   <style>
     body {
       background-color: #e0e0e0;
@@ -20,7 +20,7 @@
 </head>
 <body>
 <div class="container">
-  <h2 th:text="'Hello! Added new product with name: (' + ${name} + ') and description: (' + ${des} + ')'"></h2>
+  <p th:text="'Hello! Added new category with name: ' + ${name}"></p>
 </div>
 <form action="/" method="GET" id="backForm">
   <button>Go back</button>

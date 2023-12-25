@@ -1,9 +1,12 @@
 package com.allegro.DTO;
 
 import com.allegro.Document.MongoProduct;
+import com.allegro.Entity.Category;
 import com.allegro.Entity.PostgresProduct;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 public class ProductDTO {
 
@@ -15,7 +18,7 @@ public class ProductDTO {
     private String name;
     @Getter
     @Setter
-    private String category;
+    private List<Category> categories;
     @Getter
     @Setter
     private float price;
@@ -27,10 +30,10 @@ public class ProductDTO {
     }
 
 
-    public ProductDTO(String id, String name, String category, float price, String description) {
+    public ProductDTO(String id, String name, List<Category> category, float price, String description) {
         this.id = id;
         this.name = name;
-        this.category = category;
+        this.categories = category;
         this.price = price;
         this.description = description;
     }
@@ -38,7 +41,7 @@ public class ProductDTO {
     public ProductDTO(PostgresProduct postgresProduct, MongoProduct mongoProduct){
         this.id = postgresProduct.getId();
         this.name = postgresProduct.getName();
-        this.category = postgresProduct.getCategory();
+        this.categories = postgresProduct.getCategories();
         this.price = postgresProduct.getPrice();
         this.description = mongoProduct.getDescription();
     }
@@ -48,6 +51,15 @@ public class ProductDTO {
     }
 
     public PostgresProduct getPostgres(){
-        return new PostgresProduct(this.id, this.name, this.category, this.price);
+        return new PostgresProduct(this.id, this.name, this.categories, this.price);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder categoryNames = new StringBuilder();
+        for (Category category : categories) {
+            categoryNames.append(category.getCategoryName()).append(" ");
+        }
+        return this.name + " " + categoryNames + " " + this.price + " " + this.description;
     }
 }

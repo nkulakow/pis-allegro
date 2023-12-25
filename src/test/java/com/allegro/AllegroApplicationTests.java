@@ -1,5 +1,6 @@
 package com.allegro;
 
+import com.allegro.Service.CategoryService;
 import com.allegro.Service.ProductService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -20,6 +21,9 @@ class AllegroApplicationTests {
     @MockBean
     private ProductService productService;
 
+    @MockBean
+    private CategoryService categoryService;
+
     @Test
     void contextLoads() {
     }
@@ -28,11 +32,11 @@ class AllegroApplicationTests {
     void sayHelloTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/hello")
                         .param("name", "John")
-                        .param("category", "Electronics"))
+                        .param("description", "Electronics"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("hello.html"))
                 .andExpect(MockMvcResultMatchers.model().attribute("name", "John"))
-                .andExpect(MockMvcResultMatchers.model().attribute("cat", "Electronics"));
+                .andExpect(MockMvcResultMatchers.model().attribute("des", "Electronics"));
     }
 
 }
