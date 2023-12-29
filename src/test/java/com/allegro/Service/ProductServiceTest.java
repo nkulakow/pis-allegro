@@ -50,7 +50,7 @@ public class ProductServiceTest {
         categories.add(category);
 
         when(postgresProductRepository.save(any(PostgresProduct.class))).thenReturn(new PostgresProduct(generatedId, name, categories, price));
-        when(mongoProductRepository.insert(any(MongoProduct.class))).thenReturn(new MongoProduct(generatedId, name, description));
+        when(mongoProductRepository.insert(any(MongoProduct.class))).thenReturn(new MongoProduct(generatedId, description));
 
         productService.addProduct(name, categories , price, description);
 
@@ -60,8 +60,8 @@ public class ProductServiceTest {
 
     @Test
     void getMongoProductsTest() {
-        List<MongoProduct> expectedMongoProducts = Arrays.asList(new MongoProduct("1", "name1", "Category1"),
-                new MongoProduct("2", "name2", "Category2"));
+        List<MongoProduct> expectedMongoProducts = Arrays.asList(new MongoProduct("1",  "Category1"),
+                new MongoProduct("2", "Category2"));
 
         when(mongoProductRepository.findAll()).thenReturn(expectedMongoProducts);
 
@@ -75,8 +75,8 @@ public class ProductServiceTest {
         Category category = new Category("TestCategory");
         ArrayList<Category> categories = new ArrayList<>();
         categories.add(category);
-        List<MongoProduct> expectedMongoProducts = Arrays.asList(new MongoProduct("1", "Product1", "desc1"),
-                new MongoProduct("2", "Product2", "desc2"));
+        List<MongoProduct> expectedMongoProducts = Arrays.asList(new MongoProduct("1", "desc1"),
+                new MongoProduct("2",  "desc2"));
         List<PostgresProduct> expectedPostgresProducts = Arrays.asList(new PostgresProduct("1", "Product1", categories, 1.3F),
                 new PostgresProduct("2", "Product2", categories, 4F));
 
@@ -96,8 +96,8 @@ public class ProductServiceTest {
         ArrayList<Category> categories = new ArrayList<>();
         categories.add(category);
         String text = "text";
-        List<MongoProduct> expectedMongoProducts = Arrays.asList(new MongoProduct("1", "Product1", "desc1"),
-                new MongoProduct("2", "Product2", "desc2"));
+        List<MongoProduct> expectedMongoProducts = Arrays.asList(new MongoProduct("1",  "desc1"),
+                new MongoProduct("2",  "desc2"));
         List<PostgresProduct> expectedPostgresProducts = Arrays.asList(new PostgresProduct("1", "Product1", categories, 1.3F),
                 new PostgresProduct("2", "Product2", categories, 4F));
 

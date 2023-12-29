@@ -10,16 +10,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class MongoProduct {
     @Id
     private String id;
-
-    @TextIndexed(weight = 2)
-    private String name;
-
     @TextIndexed(weight = 1)
     private String description;
 
-    public MongoProduct(String id, String name, String description) {
+    public MongoProduct(String id, String description) {
         this.id = id;
-        this.name = name;
         this.description = description;
     }
 
@@ -29,10 +24,6 @@ public class MongoProduct {
 
     public String getDescription() {
         return description;
-    }
-
-    public String getName() {
-        return name;
     }
 
     @Override

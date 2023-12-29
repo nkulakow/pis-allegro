@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.query.TextCriteria;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,18 +67,33 @@ public class ProductService {
 
     public List<ProductDTO> findByText(String text) {
         TextCriteria criteria = TextCriteria.forDefaultLanguage().matchingAny(text);
-        var mongoList = mongoProductRepository.findAllBy(criteria, Sort.by("name"));
+        var postgresList = postgresProductRepository.searchProducts(text);
+        var mongoList = mongoProductRepository.findAllBy(criteria, Sort.by("description"));
         var productList = new ArrayList<ProductDTO>();
-        for (var mongoProd : mongoList) {
-            var targetId = mongoProd.getId();
-            Optional<PostgresProduct> pProdFound = postgresProductRepository.findById(targetId);
-            if (pProdFound.isPresent()) {
-                PostgresProduct postgresProd = pProdFound.get();
-                productList.add(new ProductDTO(postgresProd, mongoProd));
-            } else {
-//                @TODO throw or sth else
+        var seenProductIds = new HashSet<String>();
+
+        for (var postProd : postgresList) {
+            var targetId = postProd.getId();
+            if (!seenProductIds.contains(targetId)) {
+                Optional<MongoProduct> mProdFound = mongoProductRepository.findById(targetId);
+                mProdFound.ifPresent(mongoProduct -> {
+                    productList.add(new ProductDTO(postProd, mongoProduct));
+                    seenProductIds.add(targetId);
+                });
             }
         }
+
+        for (var mongoProd : mongoList) {
+            var targetId = mongoProd.getId();
+            if (!seenProductIds.contains(targetId)) {
+                Optional<PostgresProduct> pProdFound = postgresProductRepository.findById(targetId);
+                pProdFound.ifPresent(postgresProd -> {
+                    productList.add(new ProductDTO(postgresProd, mongoProd));
+                    seenProductIds.add(targetId);
+                });
+            }
+        }
+
         return productList;
     }
 }

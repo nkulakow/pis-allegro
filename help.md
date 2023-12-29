@@ -41,7 +41,7 @@ show dbs
 ```
 powinna się pojawić baza danych o nazwie pis.  
 
-## MONGO - po pierwszym mvn install
+## MONGO - po pierwszym mvn install i pierwszym uruchomieniu aplikacji
 Trzeba zrobić indeks na product:
 ```bash
 docker exec -it pis-mongo mongosh

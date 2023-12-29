@@ -47,7 +47,7 @@ public class ProductDTO {
     }
 
     public MongoProduct getMongo(){
-        return new MongoProduct(this.id, this.name, this.description);
+        return new MongoProduct(this.id, this.description);
     }
 
     public PostgresProduct getPostgres(){
