@@ -6,11 +6,29 @@
 </head>
 <body>
 <div>
-  <h2>Got:</h2>
-  <p th:text="${info}"></p>
+    <h2>Results:</h2>
+    <ul>
+        <!-- Iterate over the product list -->
+        <li th:each="product : ${productList}">
+            <p>
+                <!-- Display product information -->
+                <span th:text="${product.name}"></span> -
+                <span th:text="${product.description}"></span>
+                <span th:text="${product.stringCategories}"></span>
+            <div th:each="product : ${productList}">
+                <!-- Other product details -->
+
+                <div th:each="photo : ${product.base64EncodedPhotos}">
+                    <img th:src="'data:image/png;base64,' + ${photo}" alt="Product Photo"/>
+                </div>
+            </div>
+
+            </p>
+        </li>
+    </ul>
 </div>
 <form action="/" method="GET" id="backForm">
-  <button>Go back</button>
+    <button>Go back</button>
 </form>
 </body>
 </html>

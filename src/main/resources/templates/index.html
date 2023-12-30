@@ -10,7 +10,7 @@
 <body>
 <!--<p><a href="/hello">Greet the world!</a></p>-->
 
-<form action="/hello" method="GET" id="productForm">
+<form action="/hello" method="POST" enctype="multipart/form-data" id="productForm">
     <div>
         ADD PRODUCT
         <label for="nameField">Add name</label>
@@ -22,6 +22,9 @@
         <select name="categories" id="categoriesField" multiple>
             <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.categoryName}"></option>
         </select>
+        <label for="photo">Product Photo:</label>
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+        <input type="file" id="photo" name="photo" accept="image/*" required><br>
         <button>Send!</button>
     </div>
 </form>

@@ -7,6 +7,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -30,7 +31,10 @@ class AllegroApplicationTests {
 
     @Test
     void sayHelloTest() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/hello")
+        MockMultipartFile file = new MockMultipartFile("photo", "test.jpg", "image/jpeg", "photo content".getBytes());
+
+        mockMvc.perform(MockMvcRequestBuilders.multipart("/hello")
+                        .file(file)
                         .param("name", "John")
                         .param("description", "Electronics"))
                 .andExpect(MockMvcResultMatchers.status().isOk())

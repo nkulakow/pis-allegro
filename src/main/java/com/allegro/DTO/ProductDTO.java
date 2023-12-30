@@ -5,8 +5,13 @@ import com.allegro.Entity.Category;
 import com.allegro.Entity.PostgresProduct;
 import lombok.Getter;
 import lombok.Setter;
+import org.bson.types.Binary;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.Base64;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ProductDTO {
 
@@ -26,16 +31,22 @@ public class ProductDTO {
     @Setter
     private String description;
 
+    @Getter
+    @Setter
+    @Nullable
+    private List<Binary> photos;
+
     public ProductDTO() {
     }
 
 
-    public ProductDTO(String id, String name, List<Category> category, float price, String description) {
+    public ProductDTO(String id, String name, List<Category> category, float price, String description, @Nullable List<Binary> photos) {
         this.id = id;
         this.name = name;
         this.categories = category;
         this.price = price;
         this.description = description;
+        this.photos = photos;
     }
 
     public ProductDTO(PostgresProduct postgresProduct, MongoProduct mongoProduct){
@@ -44,10 +55,11 @@ public class ProductDTO {
         this.categories = postgresProduct.getCategories();
         this.price = postgresProduct.getPrice();
         this.description = mongoProduct.getDescription();
+        this.photos = mongoProduct.getPhotos();
     }
 
     public MongoProduct getMongo(){
-        return new MongoProduct(this.id, this.description);
+        return new MongoProduct(this.id, this.description, this.photos);
     }
 
     public PostgresProduct getPostgres(){
@@ -61,5 +73,28 @@ public class ProductDTO {
             categoryNames.append(category.getCategoryName()).append(" ");
         }
         return this.name + " " + categoryNames + " " + this.price + " " + this.description;
+    }
+
+    public List<String> getBase64EncodedPhotos() {
+        if (photos == null) {
+            return Collections.emptyList();
+        }
+
+        return photos.stream()
+                .map(this::convertBinaryToBase64)
+                .collect(Collectors.toList());
+    }
+
+    private String convertBinaryToBase64(Binary binary) {
+        byte[] data = binary.getData();
+        return Base64.getEncoder().encodeToString(data);
+    }
+
+    public String getStringCategories(){
+        StringBuilder text = new StringBuilder();
+        for (var category: this.categories ) {
+            text.append(" ").append(category.getCategoryName());
+        }
+        return text.toString();
     }
 }

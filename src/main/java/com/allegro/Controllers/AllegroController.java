@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -29,14 +31,14 @@ public class AllegroController {
 
 
     @RequestMapping("/hello")
-    public ModelAndView sayHello(@RequestParam(value = "name", defaultValue = "name") String name, @RequestParam(value = "description", defaultValue = "description") String des, @RequestParam(value = "categories", required = false) List<String> categoryIds) {
+    public ModelAndView sayHello(@RequestParam(value = "name", defaultValue = "name") String name, @RequestParam(value = "description", defaultValue = "description") String des, @RequestParam(value = "categories", required = false) List<String> categoryIds, @RequestParam("photo") MultipartFile photo) throws IOException {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("hello.html");
         modelAndView.addObject("name", name);
         modelAndView.addObject("des", des);
         List<Category> selectedCategories = categoryService.getCategoriesByIds(categoryIds);
 
-        productService.addProduct(name, selectedCategories, 123, des);
+        productService.addProduct(name, selectedCategories, 123, des, photo);
         return modelAndView;
     }
 
@@ -71,12 +73,7 @@ public class AllegroController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("fulltext-search.html");
         List<ProductDTO> productList = productService.findByText(search);
-        String info = "";
-        for (var product: productList){
-            info = info.concat(product.toString());
-            info = info.concat(",");
-        }
-        modelAndView.addObject("info", info);
+        modelAndView.addObject("productList", productList);
         return modelAndView;
     }
 

@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -50,9 +51,13 @@ public class ProductServiceTest {
         categories.add(category);
 
         when(postgresProductRepository.save(any(PostgresProduct.class))).thenReturn(new PostgresProduct(generatedId, name, categories, price));
-        when(mongoProductRepository.insert(any(MongoProduct.class))).thenReturn(new MongoProduct(generatedId, description));
+        when(mongoProductRepository.insert(any(MongoProduct.class))).thenReturn(new MongoProduct(generatedId, description, null));
 
-        productService.addProduct(name, categories , price, description);
+        try {
+            productService.addProduct(name, categories , price, description, null);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         verify(postgresProductRepository, times(1)).save(any(PostgresProduct.class));
         verify(mongoProductRepository, times(1)).insert(any(MongoProduct.class));
@@ -60,8 +65,8 @@ public class ProductServiceTest {
 
     @Test
     void getMongoProductsTest() {
-        List<MongoProduct> expectedMongoProducts = Arrays.asList(new MongoProduct("1",  "Category1"),
-                new MongoProduct("2", "Category2"));
+        List<MongoProduct> expectedMongoProducts = Arrays.asList(new MongoProduct("1",  "Category1", null),
+                new MongoProduct("2", "Category2", null));
 
         when(mongoProductRepository.findAll()).thenReturn(expectedMongoProducts);
 
@@ -75,8 +80,8 @@ public class ProductServiceTest {
         Category category = new Category("TestCategory");
         ArrayList<Category> categories = new ArrayList<>();
         categories.add(category);
-        List<MongoProduct> expectedMongoProducts = Arrays.asList(new MongoProduct("1", "desc1"),
-                new MongoProduct("2",  "desc2"));
+        List<MongoProduct> expectedMongoProducts = Arrays.asList(new MongoProduct("1", "desc1", null),
+                new MongoProduct("2",  "desc2", null));
         List<PostgresProduct> expectedPostgresProducts = Arrays.asList(new PostgresProduct("1", "Product1", categories, 1.3F),
                 new PostgresProduct("2", "Product2", categories, 4F));
 
@@ -96,8 +101,8 @@ public class ProductServiceTest {
         ArrayList<Category> categories = new ArrayList<>();
         categories.add(category);
         String text = "text";
-        List<MongoProduct> expectedMongoProducts = Arrays.asList(new MongoProduct("1",  "desc1"),
-                new MongoProduct("2",  "desc2"));
+        List<MongoProduct> expectedMongoProducts = Arrays.asList(new MongoProduct("1",  "desc1", null),
+                new MongoProduct("2",  "desc2", null));
         List<PostgresProduct> expectedPostgresProducts = Arrays.asList(new PostgresProduct("1", "Product1", categories, 1.3F),
                 new PostgresProduct("2", "Product2", categories, 4F));
 
