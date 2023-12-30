@@ -62,6 +62,13 @@ public class PageNavigator {
         return modelAndView;
     }
 
+    @RequestMapping("/product-info")
+    public ModelAndView getProductInfoPage() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("product-info.html");
+        return modelAndView;
+    }
+
 //    @RequestMapping("/add-category")
 //    public ModelAndView getAddCategoryPage(){
 //        ModelAndView modelAndView = new ModelAndView();
