@@ -35,6 +35,20 @@ public class AllegroController {
         return modelAndView;
     }
 
+    @RequestMapping("/fulltext-search")
+    public ModelAndView getSearchPage() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("fulltext-search.html");
+        return modelAndView;
+    }
+
+    @RequestMapping("/previous-buys")
+    public ModelAndView getPreviousBuysPage() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("previous-buys.html");
+        return modelAndView;
+    }
+
     @RequestMapping("/add-product")
     public ModelAndView getAddProductPage() {
         ModelAndView modelAndView = new ModelAndView();
@@ -46,13 +60,6 @@ public class AllegroController {
     public ModelAndView getAddCategoryPage(){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("add-category.html");
-        return modelAndView;
-    }
-
-    @RequestMapping("/fulltext-search")
-    public ModelAndView getSearchPage() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("fulltext-search.html");
         return modelAndView;
     }
 
