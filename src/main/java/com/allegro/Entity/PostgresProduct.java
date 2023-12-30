@@ -1,9 +1,10 @@
 package com.allegro.Entity;
 
-import lombok.Data;
-
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
+
+import java.util.List;
 
 @Data
 @Entity
@@ -18,9 +19,14 @@ public class PostgresProduct {
     @Getter
     private String name;
 
-    @Column
+    @ManyToMany
     @Getter
-    private String category;
+    @JoinTable(
+            name = "product_category",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private List<Category> categories;
 
     @Column
     @Getter
@@ -29,15 +35,19 @@ public class PostgresProduct {
     public PostgresProduct() {
     }
 
-    public PostgresProduct(String id, String name, String category, float price) {
+    public PostgresProduct(String id, String name, List<Category> categories, float price) {
         this.id = id;
         this.name = name;
-        this.category = category;
+        this.categories = categories;
         this.price = price;
     }
 
     @Override
     public String toString(){
-        return this.name + " " + this.category + " " + this.price;
+        StringBuilder categoryNames = new StringBuilder();
+        for (Category category : categories) {
+            categoryNames.append(category.getCategoryName()).append(" ");
+        }
+        return this.name + " " + categoryNames + " " + this.price;
     }
 }

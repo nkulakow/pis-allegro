@@ -1,7 +1,10 @@
 package com.allegro.Controllers;
 
+import com.allegro.DTO.ProductDTO;
 import com.allegro.Document.MongoProduct;
+import com.allegro.Entity.Category;
 import com.allegro.Entity.PostgresProduct;
+import com.allegro.Service.CategoryService;
 import com.allegro.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,22 +18,30 @@ import java.util.List;
 public class AllegroController {
 
 
-    @Autowired
     ProductService productService;
+    CategoryService categoryService;
+
+    @Autowired
+    public AllegroController(ProductService productService, CategoryService categoryService){
+        this.productService = productService;
+        this.categoryService = categoryService;
+    }
 
 
     @RequestMapping("/hello")
-    public ModelAndView sayHello(@RequestParam(value = "name", defaultValue = "name") String name, @RequestParam(value = "category", defaultValue = "cat") String cat) {
+    public ModelAndView sayHello(@RequestParam(value = "name", defaultValue = "name") String name, @RequestParam(value = "description", defaultValue = "description") String des, @RequestParam(value = "categories", required = false) List<String> categoryIds) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("hello.html");
         modelAndView.addObject("name", name);
-        modelAndView.addObject("cat", cat);
-        productService.addProduct(name, cat, 123, "default description");
+        modelAndView.addObject("des", des);
+        List<Category> selectedCategories = categoryService.getCategoriesByIds(categoryIds);
+
+        productService.addProduct(name, selectedCategories, 123, des);
         return modelAndView;
     }
 
     @RequestMapping("/")
-    public ModelAndView connectToMongoDB(){
+    public ModelAndView getMainPage(){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("index.html");
 
@@ -48,6 +59,33 @@ public class AllegroController {
             info = info.concat(",");
         }
         modelAndView.addObject("info", info);
+
+        List<Category> categories = categoryService.getAllCategories();
+        modelAndView.addObject("categories", categories);
+
+        return modelAndView;
+    }
+
+    @RequestMapping("/fulltext-search")
+    public ModelAndView fullTextSearch(@RequestParam(value = "search", defaultValue = "search") String search){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("fulltext-search.html");
+        List<ProductDTO> productList = productService.findByText(search);
+        String info = "";
+        for (var product: productList){
+            info = info.concat(product.toString());
+            info = info.concat(",");
+        }
+        modelAndView.addObject("info", info);
+        return modelAndView;
+    }
+
+    @RequestMapping("/add-category")
+    public ModelAndView addCategory(@RequestParam(value = "name", defaultValue = "name") String name){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("added-category.html");
+        categoryService.addCategory(name);
+        modelAndView.addObject("name", name);
         return modelAndView;
     }
 

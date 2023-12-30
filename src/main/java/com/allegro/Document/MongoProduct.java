@@ -2,6 +2,7 @@ package com.allegro.Document;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
@@ -9,21 +10,16 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class MongoProduct {
     @Id
     private String id;
-    private String name;
+    @TextIndexed(weight = 1)
     private String description;
 
-    public MongoProduct(String id, String name, String description) {
+    public MongoProduct(String id, String description) {
         this.id = id;
-        this.name = name;
         this.description = description;
     }
 
     public String getId() {
         return id;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public String getDescription() {
@@ -32,6 +28,6 @@ public class MongoProduct {
 
     @Override
     public String toString() {
-        return this.name + " " + this.description;
+        return this.description;
     }
 }
