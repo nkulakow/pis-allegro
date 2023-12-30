@@ -6,7 +6,7 @@
 </head>
 <body>
     <div>
-        ADD PRODUCT
+        <h2>Add a new product</h2>
         <div>
             <label for="nameField">Add name</label>
             <input name="name" id="nameField">
@@ -18,12 +18,27 @@
         <div>
             <label for="categoriesField">Select categories</label>
             <select name="categories" id="categoriesField" multiple>
-                <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.categoryName}"></option>
+                <option value="option1">Category 1</option>
+                <option value="option2">Category 2</option>
+                <option value="option3">Category 3</option>
             </select>
         </div>
         <div>
             <button>Send!</button>
         </div>
+    </div>
+    <div>
+        <h2>Your products</h2>
+        <ul>
+            <li>
+                Product 1
+                <button>Edit</button>
+            </li>
+            <li>
+                Product 2
+                <button>Edit</button>
+            </li>
+        </ul>
     </div>
 </body>
 </html>

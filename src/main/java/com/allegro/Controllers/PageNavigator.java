@@ -1,29 +1,21 @@
 package com.allegro.Controllers;
 
-import com.allegro.DTO.ProductDTO;
-import com.allegro.Document.MongoProduct;
-import com.allegro.Entity.Category;
-import com.allegro.Entity.PostgresProduct;
 import com.allegro.Service.CategoryService;
 import com.allegro.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/")
-public class AllegroController {
-
+public class PageNavigator {
 
     ProductService productService;
     CategoryService categoryService;
 
     @Autowired
-    public AllegroController(ProductService productService, CategoryService categoryService){
+    public PageNavigator(ProductService productService, CategoryService categoryService){
         this.productService = productService;
         this.categoryService = categoryService;
     }
@@ -49,17 +41,17 @@ public class AllegroController {
         return modelAndView;
     }
 
-    @RequestMapping("/add-product")
+    @RequestMapping("/manage-products")
     public ModelAndView getAddProductPage() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("add-product.html");
+        modelAndView.setViewName("manage-products.html");
         return modelAndView;
     }
 
-    @RequestMapping("/add-category")
-    public ModelAndView getAddCategoryPage(){
+    @RequestMapping("/cart")
+    public ModelAndView getCartPage() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("add-category.html");
+        modelAndView.setViewName("cart.html");
         return modelAndView;
     }
 
@@ -69,4 +61,11 @@ public class AllegroController {
         modelAndView.setViewName("view-all-products.html");
         return modelAndView;
     }
+
+//    @RequestMapping("/add-category")
+//    public ModelAndView getAddCategoryPage(){
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.setViewName("add-category.html");
+//        return modelAndView;
+//    }
 }
