@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 @RestController
+@RequestMapping("/")
 public class AllegroController {
 
 
@@ -27,68 +28,38 @@ public class AllegroController {
         this.categoryService = categoryService;
     }
 
-
-    @RequestMapping("/hello")
-    public ModelAndView sayHello(@RequestParam(value = "name", defaultValue = "name") String name, @RequestParam(value = "description", defaultValue = "description") String des, @RequestParam(value = "categories", required = false) List<String> categoryIds) {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("hello.html");
-        modelAndView.addObject("name", name);
-        modelAndView.addObject("des", des);
-        List<Category> selectedCategories = categoryService.getCategoriesByIds(categoryIds);
-
-        productService.addProduct(name, selectedCategories, 123, des);
-        return modelAndView;
-    }
-
     @RequestMapping("/")
     public ModelAndView getMainPage(){
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("index.html");
-
-        String info = "MONGODB: ";
-        List<MongoProduct> listOfMongoProducts = productService.getMongoProducts();
-        for (MongoProduct mongoProduct : listOfMongoProducts
-             ) {
-            info = info.concat(mongoProduct.toString());
-            info = info.concat(",");
-        }
-        List<PostgresProduct> postgresProductList = productService.getPostgresProducts();
-        info = info.concat("/n POSTGRESQL: ");
-        for (PostgresProduct product: postgresProductList){
-            info = info.concat(product.toString());
-            info = info.concat(",");
-        }
-        modelAndView.addObject("info", info);
-
-        List<Category> categories = categoryService.getAllCategories();
-        modelAndView.addObject("categories", categories);
-
+        modelAndView.setViewName("main-page.html");
         return modelAndView;
     }
 
-    @RequestMapping("/fulltext-search")
-    public ModelAndView fullTextSearch(@RequestParam(value = "search", defaultValue = "search") String search){
+    @RequestMapping("/add-product")
+    public ModelAndView getAddProductPage() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("fulltext-search.html");
-        List<ProductDTO> productList = productService.findByText(search);
-        String info = "";
-        for (var product: productList){
-            info = info.concat(product.toString());
-            info = info.concat(",");
-        }
-        modelAndView.addObject("info", info);
+        modelAndView.setViewName("add-product.html");
         return modelAndView;
     }
 
     @RequestMapping("/add-category")
-    public ModelAndView addCategory(@RequestParam(value = "name", defaultValue = "name") String name){
+    public ModelAndView getAddCategoryPage(){
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("added-category.html");
-        categoryService.addCategory(name);
-        modelAndView.addObject("name", name);
+        modelAndView.setViewName("add-category.html");
         return modelAndView;
     }
 
-    public static boolean isNumberEven(int number){return number%2==0;}
+    @RequestMapping("/fulltext-search")
+    public ModelAndView getSearchPage() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("fulltext-search.html");
+        return modelAndView;
+    }
 
+    @RequestMapping("/view-all-products")
+    public ModelAndView getAllProductsPage() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("view-all-products.html");
+        return modelAndView;
+    }
 }

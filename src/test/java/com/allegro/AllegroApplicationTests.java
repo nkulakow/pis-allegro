@@ -28,15 +28,15 @@ class AllegroApplicationTests {
     void contextLoads() {
     }
 
-    @Test
-    void sayHelloTest() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/hello")
-                        .param("name", "John")
-                        .param("description", "Electronics"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("hello.html"))
-                .andExpect(MockMvcResultMatchers.model().attribute("name", "John"))
-                .andExpect(MockMvcResultMatchers.model().attribute("des", "Electronics"));
-    }
+//    @Test
+//    void sayHelloTest() throws Exception {
+//        mockMvc.perform(MockMvcRequestBuilders.get("/hello")
+//                        .param("name", "John")
+//                        .param("description", "Electronics"))
+//                .andExpect(MockMvcResultMatchers.status().isOk())
+//                .andExpect(MockMvcResultMatchers.view().name("hello.html"))
+//                .andExpect(MockMvcResultMatchers.model().attribute("name", "John"))
+//                .andExpect(MockMvcResultMatchers.model().attribute("des", "Electronics"));
+//    }
 
 }

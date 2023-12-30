@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Add product</title>
+</head>
+<body>
+    <div>
+        ADD PRODUCT
+        <div>
+            <label for="nameField">Add name</label>
+            <input name="name" id="nameField">
+        </div>
+        <div>
+            <label for="descriptionField">Add description</label>
+            <input name="description" id="descriptionField">
+        </div>
+        <div>
+            <label for="categoriesField">Select categories</label>
+            <select name="categories" id="categoriesField" multiple>
+                <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.categoryName}"></option>
+            </select>
+        </div>
+        <div>
+            <button>Send!</button>
+        </div>
+    </div>
+</body>
+</html>
