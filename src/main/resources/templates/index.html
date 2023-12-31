@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Your first Spring application</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+</head>
+<body>
+<!--<p><a href="/hello">Greet the world!</a></p>-->
+
+<form action="/hello" method="POST" enctype="multipart/form-data" id="productForm">
+    <div>
+        ADD PRODUCT
+        <label for="nameField">Add name</label>
+        <input name="name" id="nameField">
+        <label for="descriptionField">Add description</label>
+        <input name="description" id="descriptionField">
+        <label for="categoriesField">Select categories</label>
+        <label for="categoriesField">Select categories</label>
+        <select name="categories" id="categoriesField" multiple>
+            <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.categoryName}"></option>
+        </select>
+        <label for="photo">Product Photo:</label>
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+        <input type="file" id="photo" name="photo" accept="image/*" required><br>
+        <button>Send!</button>
+    </div>
+</form>
+    <h1>Database Information</h1>
+    <h2>Products in database:</h2>
+    <p th:text="${info}"></p>
+    <div>
+        <h3>Search in databases</h3>
+        <form action="/fulltext-search" method="GET" id="searchForm">
+            <label for="searchField">Search</label>
+            <input name="search" id="searchField">
+            <button>Search</button>
+        </form>
+    </div>
+<div>
+    <form action="/add-category" method="GET" id="addCategoryForm">
+        <h3>Add Category</h3>
+        <label for="catNameField">Add name</label>
+        <input name="name" id="catNameField">
+        <button>Send!</button>
+    </form>
+</div>
+
+<script>
+    // Activate Select2 on the categoriesField
+    $(document).ready(function() {
+        $('#categoriesField').select2();
+    });
+</script>
+
+</body>
+</html>

@@ -8,11 +8,14 @@ import com.allegro.Repository.PostgresProductRepository;
 import com.allegro.Repository.MongoProductRepository;
 import com.allegro.utilis.IdGenerator;
 import jakarta.transaction.Transactional;
+import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.TextCriteria;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -32,9 +35,15 @@ public class ProductService {
     }
 
     @Transactional
-    public void addProduct(String name, List<Category> categories, float price, String description){
+    public void addProduct(String name, List<Category> categories, float price, String description, MultipartFile photo) throws IOException {
         String id = IdGenerator.generateId();
-        ProductDTO productDTO = new ProductDTO(id, name, categories, price, description);
+        List<Binary> photos = null;
+        if (photo != null) {
+            byte[] photoData = photo.getBytes();
+            photos = new ArrayList<>();
+            photos.add(new Binary(photoData));
+        }
+        ProductDTO productDTO = new ProductDTO(id, name, categories, price, description, photos);
         postgresProductRepository.save(productDTO.getPostgres());
         mongoProductRepository.insert(productDTO.getMongo());
     }
