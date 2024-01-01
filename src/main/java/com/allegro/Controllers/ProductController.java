@@ -4,6 +4,7 @@ import com.allegro.DTO.ProductDTO;
 import com.allegro.Entity.Category;
 import com.allegro.Entity.User;
 import com.allegro.Service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,7 @@ import com.allegro.Service.CategoryService;
 import com.allegro.Service.ProductService;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,11 +47,10 @@ public class ProductController {
             @RequestParam List<String> productCategories,
             @RequestParam int productPrice,
             @RequestParam String productDescription,
-            @RequestPart(value = "file", required = false) MultipartFile productPhoto) {
+            @RequestPart(value = "file", required = false) MultipartFile productPhoto, HttpSession session) {
         System.out.println(productPhoto == null);
         // @TODO: logged in user
-        var user = new User("123@gmail.com", "password", "John", "Doe", null, null);
-        this.userService.addUser(user);
+        var user = this.userService.getUserByEmail((String) session.getAttribute("login"));
         var quantity = 2;
         try {
             this.productService.addProduct(user,

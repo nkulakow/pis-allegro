@@ -52,7 +52,7 @@ public class ProductService {
         postgresProductRepository.save(productDTO.getPostgres());
         mongoProductRepository.insert(productDTO.getMongo());
         user.addSoldProduct(productDTO.getPostgres());
-        userService.addUser(user);
+//      userService.addUser(user);
     }
 
     @Transactional

@@ -7,6 +7,7 @@ import org.hibernate.annotations.GenericGenerator;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @Entity
@@ -95,4 +96,16 @@ public class User {
             this.cartItems.add(cartItem);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        User otherUser = (User) obj;
+        return this.email.equals((otherUser.getEmail()));
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id, this.email);
+    }
 }
+

@@ -58,6 +58,7 @@ public class ProductDTO {
         this.quantity = quantity;
         this.description = description;
         this.photos = photos;
+        this.user = user;
     }
 
     public ProductDTO(PostgresProduct postgresProduct, MongoProduct mongoProduct){
