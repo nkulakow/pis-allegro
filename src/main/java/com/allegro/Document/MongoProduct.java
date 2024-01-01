@@ -19,11 +19,6 @@ public class MongoProduct {
     @Nullable
     private List<Binary> photos;
 
-//    public MongoProduct(String id, String description) {
-//        this.id = id;
-//        this.description = description;
-//    }
-
     public MongoProduct(String id, String description, @Nullable List<Binary> photos) {
         this.id = id;
         this.description = description;

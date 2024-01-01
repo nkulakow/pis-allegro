@@ -27,6 +27,11 @@ public class ProductDTO {
     @Getter
     @Setter
     private float price;
+
+    @Getter
+    @Setter
+    private int quantity;
+
     @Getter
     @Setter
     private String description;
@@ -40,11 +45,12 @@ public class ProductDTO {
     }
 
 
-    public ProductDTO(String id, String name, List<Category> category, float price, String description, @Nullable List<Binary> photos) {
+    public ProductDTO(String id, String name, List<Category> category, float price, int quantity, String description, @Nullable List<Binary> photos) {
         this.id = id;
         this.name = name;
         this.categories = category;
         this.price = price;
+        this.quantity = quantity;
         this.description = description;
         this.photos = photos;
     }
@@ -54,6 +60,7 @@ public class ProductDTO {
         this.name = postgresProduct.getName();
         this.categories = postgresProduct.getCategories();
         this.price = postgresProduct.getPrice();
+        this.quantity = postgresProduct.getQuantity();
         this.description = mongoProduct.getDescription();
         this.photos = mongoProduct.getPhotos();
     }
@@ -63,7 +70,7 @@ public class ProductDTO {
     }
 
     public PostgresProduct getPostgres(){
-        return new PostgresProduct(this.id, this.name, this.categories, this.price);
+        return new PostgresProduct(this.id, this.name, this.categories, this.price, this.quantity);
     }
 
     @Override
@@ -72,7 +79,7 @@ public class ProductDTO {
         for (Category category : categories) {
             categoryNames.append(category.getCategoryName()).append(" ");
         }
-        return this.name + " " + categoryNames + " " + this.price + " " + this.description;
+        return this.name + " " + categoryNames + " " + this.price + " " + this.quantity + " " + this.description;
     }
 
     public List<String> getBase64EncodedPhotos() {

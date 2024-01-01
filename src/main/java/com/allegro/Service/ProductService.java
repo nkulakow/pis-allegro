@@ -1,9 +1,11 @@
 package com.allegro.Service;
 
 import com.allegro.Document.MongoProduct;
+import com.allegro.Entity.CartItem;
 import com.allegro.Entity.Category;
 import com.allegro.Entity.PostgresProduct;
 import com.allegro.DTO.ProductDTO;
+import com.allegro.Entity.User;
 import com.allegro.Repository.PostgresProductRepository;
 import com.allegro.Repository.MongoProductRepository;
 import com.allegro.utilis.IdGenerator;
@@ -35,7 +37,7 @@ public class ProductService {
     }
 
     @Transactional
-    public void addProduct(String name, List<Category> categories, float price, String description, MultipartFile photo) throws IOException {
+    public void addProduct(String name, List<Category> categories, float price, int quantity, String description, MultipartFile photo) throws IOException {
         String id = IdGenerator.generateId();
         List<Binary> photos = null;
         if (photo != null) {
@@ -43,9 +45,15 @@ public class ProductService {
             photos = new ArrayList<>();
             photos.add(new Binary(photoData));
         }
-        ProductDTO productDTO = new ProductDTO(id, name, categories, price, description, photos);
+        ProductDTO productDTO = new ProductDTO(id, name, categories, price, quantity, description, photos);
         postgresProductRepository.save(productDTO.getPostgres());
         mongoProductRepository.insert(productDTO.getMongo());
+    }
+
+    @Transactional
+    public void updateProduct(ProductDTO productDTO){
+        mongoProductRepository.save(productDTO.getMongo());
+        postgresProductRepository.save(productDTO.getPostgres());
     }
 
     public List<MongoProduct> getMongoProducts(){
@@ -105,4 +113,44 @@ public class ProductService {
 
         return productList;
     }
+
+
+    public ProductDTO getWholeProductByPostgres(PostgresProduct postgresProduct){
+        var mongoProduct = this.mongoProductRepository.findById(postgresProduct.getId());
+        if (mongoProduct.isPresent()){
+            return new ProductDTO(postgresProduct, mongoProduct.get());
+        }
+        else {
+            //@TODO throw or sth else
+        }
+        return null;
+    }
+
+    public List<ProductDTO> getWholeSoldProductsByPostgres(User user){
+        ArrayList<ProductDTO> productDTOS = new ArrayList<>();
+        for (PostgresProduct postgresProduct : user.getSoldProducts()) {
+            productDTOS.add(getWholeProductByPostgres(postgresProduct));
+        }
+        return productDTOS;
+    }
+
+    public ProductDTO getWholeProductByPostgres(CartItem cartItem){
+        var mongoProduct = this.mongoProductRepository.findById(cartItem.getProduct().getId());
+        if (mongoProduct.isPresent()){
+            return new ProductDTO(cartItem.getProduct(), mongoProduct.get());
+        }
+        else {
+            //@TODO throw or sth else
+        }
+        return null;
+    }
+
+    public List<ProductDTO> getWholeCartItemsByPostgres(User user){
+        ArrayList<ProductDTO> productDTOS = new ArrayList<>();
+        for (CartItem cartItem : user.getCartItems()) {
+            productDTOS.add(getWholeProductByPostgres(cartItem));
+        }
+        return productDTOS;
+    }
+
 }

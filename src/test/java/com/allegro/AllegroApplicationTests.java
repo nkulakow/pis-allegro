@@ -1,7 +1,9 @@
 package com.allegro;
 
+import com.allegro.Service.CartItemService;
 import com.allegro.Service.CategoryService;
 import com.allegro.Service.ProductService;
+import com.allegro.Service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,6 +26,12 @@ class AllegroApplicationTests {
 
     @MockBean
     private CategoryService categoryService;
+
+    @MockBean
+    private UserService userService;
+
+    @MockBean
+    private CartItemService cartItemService;
 
     @Test
     void contextLoads() {

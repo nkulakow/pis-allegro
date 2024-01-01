@@ -4,6 +4,7 @@ import com.allegro.DTO.ProductDTO;
 import com.allegro.Document.MongoProduct;
 import com.allegro.Entity.Category;
 import com.allegro.Entity.PostgresProduct;
+import com.allegro.Entity.User;
 import com.allegro.Repository.MongoProductRepository;
 import com.allegro.Repository.PostgresProductRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,8 +18,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -40,21 +43,23 @@ public class ProductServiceTest {
         productService = new ProductService(mongoProductRepository, postgresProductRepository);
     }
 
+
     @Test
     void addProductTest() {
         String name = "TestProduct";
         Category category = new Category("TestCategory");
         String generatedId = "generatedId";
         float price = 2.3F;
+        int quantity = 2;
         String description = "Test desc";
         ArrayList<Category> categories = new ArrayList<>();
         categories.add(category);
 
-        when(postgresProductRepository.save(any(PostgresProduct.class))).thenReturn(new PostgresProduct(generatedId, name, categories, price));
+        when(postgresProductRepository.save(any(PostgresProduct.class))).thenReturn(new PostgresProduct(generatedId, name, categories, price, quantity));
         when(mongoProductRepository.insert(any(MongoProduct.class))).thenReturn(new MongoProduct(generatedId, description, null));
 
         try {
-            productService.addProduct(name, categories , price, description, null);
+            productService.addProduct(name, categories , price, quantity, description, null);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -82,8 +87,8 @@ public class ProductServiceTest {
         categories.add(category);
         List<MongoProduct> expectedMongoProducts = Arrays.asList(new MongoProduct("1", "desc1", null),
                 new MongoProduct("2",  "desc2", null));
-        List<PostgresProduct> expectedPostgresProducts = Arrays.asList(new PostgresProduct("1", "Product1", categories, 1.3F),
-                new PostgresProduct("2", "Product2", categories, 4F));
+        List<PostgresProduct> expectedPostgresProducts = Arrays.asList(new PostgresProduct("1", "Product1", categories, 1.3F, 2),
+                new PostgresProduct("2", "Product2", categories, 4F, 4));
 
         when(mongoProductRepository.findAll()).thenReturn(expectedMongoProducts);
         when(postgresProductRepository.findAll()).thenReturn(expectedPostgresProducts);
@@ -103,8 +108,8 @@ public class ProductServiceTest {
         String text = "text";
         List<MongoProduct> expectedMongoProducts = Arrays.asList(new MongoProduct("1",  "desc1", null),
                 new MongoProduct("2",  "desc2", null));
-        List<PostgresProduct> expectedPostgresProducts = Arrays.asList(new PostgresProduct("1", "Product1", categories, 1.3F),
-                new PostgresProduct("2", "Product2", categories, 4F));
+        List<PostgresProduct> expectedPostgresProducts = Arrays.asList(new PostgresProduct("1", "Product1", categories, 1.3F, 2),
+                new PostgresProduct("2", "Product2", categories, 4F, 4));
 
         when(mongoProductRepository.findAllBy(any(), any())).thenReturn(expectedMongoProducts);
         when(postgresProductRepository.findById(any())).thenReturn(java.util.Optional.ofNullable(expectedPostgresProducts.get(0)));
@@ -113,5 +118,33 @@ public class ProductServiceTest {
 
         assertEquals(actualProducts.size(), 2);
         assertEquals(actualProducts.get(0).getName(), "Product1");
+    }
+
+    @Test
+    public void testGetWholeProductByPostgres() {
+        PostgresProduct postgresProduct = new PostgresProduct("123", "name", null, 1.0F, 1);
+        MongoProduct mongoProduct = new MongoProduct("123", "description", null);
+        when(mongoProductRepository.findById("123")).thenReturn(Optional.of(mongoProduct));
+
+        ProductDTO result = productService.getWholeProductByPostgres(postgresProduct);
+
+        assertEquals(postgresProduct, result.getPostgres());
+        assertEquals(mongoProduct, result.getMongo());
+    }
+
+    @Test
+    public void testGetWholeSoldProductsByPostgres() {
+        User user = new User();
+        PostgresProduct soldProduct = new PostgresProduct("123", "name", null, 1.0F, 1);
+        user.setSoldProducts(List.of(soldProduct));
+        MongoProduct mongoProduct = new MongoProduct("123", "description", null);;
+        when(mongoProductRepository.findById(any())).thenReturn(Optional.of(mongoProduct));
+
+        List<ProductDTO> result = productService.getWholeSoldProductsByPostgres(user);
+
+        assertEquals(1, result.size());
+        assertEquals(soldProduct, result.get(0).getPostgres());
+        assertEquals(mongoProduct, result.get(0).getMongo());
+
     }
 }

@@ -42,11 +42,13 @@ public class ProductController {
             @RequestParam String productDescription,
             @RequestPart(value = "file", required = false) MultipartFile productPhoto) {
         System.out.println(productPhoto == null);
+        var quantity = 2;
         try {
             this.productService.addProduct(
                     productName,
                     new ArrayList<>(),
                     productPrice,
+                    quantity,
                     productDescription,
                     productPhoto);
             return "Successfully added a new product: ".concat(productName);

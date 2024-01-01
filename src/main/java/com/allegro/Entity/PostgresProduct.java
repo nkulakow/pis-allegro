@@ -32,14 +32,23 @@ public class PostgresProduct {
     @Getter
     private float price;
 
+    @Column
+    @Getter
+    private int quantity;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     public PostgresProduct() {
     }
 
-    public PostgresProduct(String id, String name, List<Category> categories, float price) {
+    public PostgresProduct(String id, String name, List<Category> categories, float price, int quantity) {
         this.id = id;
         this.name = name;
         this.categories = categories;
         this.price = price;
+        this.quantity = quantity;
     }
 
     @Override
@@ -48,6 +57,6 @@ public class PostgresProduct {
         for (Category category : categories) {
             categoryNames.append(category.getCategoryName()).append(" ");
         }
-        return this.name + " " + categoryNames + " " + this.price;
+        return this.name + " " + categoryNames + " " + this.price + " " + this.quantity;
     }
 }
