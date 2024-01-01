@@ -1,9 +1,11 @@
 package com.allegro.Controllers;
 
+import com.allegro.DTO.ProductDTO;
 import com.allegro.Service.CategoryService;
 import com.allegro.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -11,13 +13,13 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/")
 public class PageNavigator {
 
-    ProductService productService;
-    CategoryService categoryService;
+//    ProductService productService;
+//    CategoryService categoryService;
 
     @Autowired
     public PageNavigator(ProductService productService, CategoryService categoryService){
-        this.productService = productService;
-        this.categoryService = categoryService;
+//        this.productService = productService;
+//        this.categoryService = categoryService;
     }
 
     @RequestMapping("/")

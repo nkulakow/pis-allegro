@@ -3,30 +3,73 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Add product</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 <body>
     <div>
         <h2>Add a new product</h2>
         <div>
-            <label for="nameField">Add name</label>
+            <label for="nameField">Name</label>
             <input name="name" id="nameField">
         </div>
         <div>
-            <label for="descriptionField">Add description</label>
-            <input name="description" id="descriptionField">
+            <label for="categories">Categories</label>
+            <input name="categories" id="categories">
         </div>
         <div>
-            <label for="categoriesField">Select categories</label>
-            <select name="categories" id="categoriesField" multiple>
-                <option value="option1">Category 1</option>
-                <option value="option2">Category 2</option>
-                <option value="option3">Category 3</option>
-            </select>
+            <label for="priceField">Price</label>
+            <input name="priceField" id="priceField">
         </div>
         <div>
-            <button>Send!</button>
+            <label for="description">Description</label>
+            <input name="description" id="description">
+        </div>
+        <div>
+            <label for="photo">Photo (not obligatory):</label>
+            <input type="file" id="photo" name="photo" accept="image/*">
+        </div>
+        <div>
+            <button onclick="submitForm()">Send!</button>
         </div>
     </div>
+    <div id="responseMessage"></div>
+    <script>
+        function submitForm() {
+            let productName = $("#nameField").val();
+            let productCategories = $("#categories").val();
+            let productPrice = $("#priceField").val();
+            let productDescription = $("#description").val();
+
+            // Create FormData object to handle file input
+            let formData = new FormData();
+            formData.append('productName', productName);
+            formData.append('productCategories', productCategories);
+            formData.append('productPrice', productPrice);
+            formData.append('productDescription', productDescription);
+
+            // Append the file to the FormData object
+            let productPhoto = $("#photo")[0].files[0];
+            formData.append('productPhoto', productPhoto);
+
+            $.ajax({
+                type: "POST",
+                url: "/products/add",
+                data: formData,
+                processData: false,  // Prevent jQuery from processing the data
+                contentType: false,  // Set content type to false as FormData will handle it
+                success: function (response) {
+                    displayResult(response);
+                }
+            });
+        }
+
+        function displayResult(response) {
+            let resultDiv = $("#responseMessage");
+            resultDiv.empty();
+            resultDiv.append("<p>" + response + "</p>");
+        }
+    </script>
+
     <div>
         <h2>Your products</h2>
         <ul>

@@ -2,18 +2,48 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Full Text Search</title>
+    <title>Spring Boot HTML Form</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 <body>
-<h2>Search for product </h2>
-    <div>
-        <label for="searchField">Search</label>
-        <input name="search" id="searchField">
-        <button>Search</button>
-    </div>
-    <div>
-      <p>Got:</p>
-      <p>Bly bly bly</p>
-    </div>
+
+<form id="searchForm">
+    <label for="inputData">Search for product:</label>
+    <input type="text" id="inputData" name="inputData">
+    <button type="button" onclick="submitForm()">Search</button>
+</form>
+
+<div id="search-result"></div>
+
+<script>
+    function submitForm() {
+        var inputData = $("#inputData").val();
+        $.ajax({
+            type: "POST",
+            url: "/products/fulltext-search-results",
+            data: { searchPhrase: inputData },
+            success: function (response) {
+                displayResult(response);
+            }
+        });
+    }
+
+    function displayResult(resultList) {
+        var resultDiv = $("#search-result");
+        resultDiv.empty();
+        if (resultList.length > 0) {
+            resultDiv.append("<p>Result:</p>");
+            resultDiv.append("<ul>");
+
+            for (var i = 0; i < resultList.length; i++) {
+                resultDiv.append("<li>" + resultList[i] + "</li>");
+            }
+            resultDiv.append("</ul>");
+        } else {
+            resultDiv.text("No results.");
+        }
+    }
+</script>
+
 </body>
 </html>
