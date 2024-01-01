@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Previous buys</title>
+    <style>
+        .description {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h2>Your previous buys</h2>
+    <ul>
+        <li>
+            Buy 1
+            <!-- Button to toggle the component -->
+            <button class="toggleButton" data-target="buy1">Toggle description</button>
+            <!-- Component to be shown/hidden -->
+            <div id="buy1" class="description">
+                <p>Very nice product 5 stars</p>
+            </div>
+        </li>
+        <li>
+            Buy 2
+            <!-- Button to toggle the component -->
+            <button class="toggleButton" data-target="buy2">Toggle description</button>
+            <!-- Component to be shown/hidden -->
+            <div id="buy2" class="description">
+                <p>Very bad product 1 star</p>
+            </div>
+        </li>
+    </ul>
+
+    <script>
+        // JavaScript function to toggle the visibility of the component
+        function toggleComponent(componentId) {
+            var component = document.getElementById(componentId);
+            if (component.style.display === "block") {
+                component.style.display = "none";
+            } else {
+                component.style.display = "block";
+            }
+        }
+        // Attach an event listener to all elements with class "toggleButton"
+        var toggleButtons = document.querySelectorAll(".toggleButton");
+        toggleButtons.forEach(function(button) {
+            button.addEventListener("click", function() {
+                // Get the target component ID from the data-target attribute
+                var componentId = button.getAttribute("data-target");
+                // Call the toggleComponent function with the retrieved ID
+                toggleComponent(componentId);
+            });
+        });
+    </script>
+</body>
+</html>

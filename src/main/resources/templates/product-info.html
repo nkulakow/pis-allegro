@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+</head>
+<body>
+    <div id="responseMessage"></div>
+
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                type: "GET",
+                url: "/products/get-all",
+                success: function (data) {
+                    displayResult(data);
+                }
+            });
+        });
+
+        function displayResult(data) {
+            let resultDiv = $("#responseMessage");
+            resultDiv.empty();
+            resultDiv.append("<h2>" + "Product " + data.name + "</h2>");
+            resultDiv.append("<p>" + "Price: " + data.price + "</p>");
+            resultDiv.append("<p>" + "Description: " + data.description + "</p>")
+            if (data.photos && data.photos.length > 0) {
+                resultDiv.append("<h2>" + "Photos:" + "</h2>");
+                for (let i = 0; i < data.photos.length; i++) {
+                    resultDiv.append("<img src='" + data.photos[i] + "'>");
+                }
+            }
+        }
+    </script>
+    <h2>Comments</h2>
+</body>
+</html>
