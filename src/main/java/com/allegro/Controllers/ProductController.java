@@ -2,6 +2,8 @@ package com.allegro.Controllers;
 
 import com.allegro.DTO.ProductDTO;
 import com.allegro.Entity.Category;
+import com.allegro.Entity.User;
+import com.allegro.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,10 +22,13 @@ public class ProductController {
     ProductService productService;
     CategoryService categoryService;
 
+    UserService userService;
+
     @Autowired
-    public ProductController(ProductService productService, CategoryService categoryService){
+    public ProductController(ProductService productService, CategoryService categoryService, UserService userService){
         this.productService = productService;
         this.categoryService = categoryService;
+        this.userService = userService;
     }
 
     @PostMapping("/fulltext-search-results")
@@ -42,9 +47,12 @@ public class ProductController {
             @RequestParam String productDescription,
             @RequestPart(value = "file", required = false) MultipartFile productPhoto) {
         System.out.println(productPhoto == null);
+        // @TODO: logged in user
+        var user = new User("123@gmail.com", "password", "John", "Doe", null, null);
+        this.userService.addUser(user);
         var quantity = 2;
         try {
-            this.productService.addProduct(
+            this.productService.addProduct(user,
                     productName,
                     new ArrayList<>(),
                     productPrice,

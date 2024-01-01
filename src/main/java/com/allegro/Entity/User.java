@@ -82,5 +82,17 @@ public class User {
         }
     }
 
+    public void addSoldProduct(PostgresProduct product){
+        if (this.soldProducts == null)
+            this.soldProducts = List.of(product);
+        else
+            this.soldProducts.add(product);
+    }
+    public void addCartItem(CartItem cartItem){
+        if (this.cartItems == null)
+            this.cartItems = List.of(cartItem);
+        else
+            this.cartItems.add(cartItem);
+    }
 
 }

@@ -40,7 +40,8 @@ public class ProductServiceTest {
     void setUp() {
         postgresProductRepository = mock(PostgresProductRepository.class);
         mongoProductRepository = mock(MongoProductRepository.class);
-        productService = new ProductService(mongoProductRepository, postgresProductRepository);
+        UserService userService = mock(UserService.class);
+        productService = new ProductService(mongoProductRepository, postgresProductRepository, userService);
     }
 
 
@@ -54,12 +55,14 @@ public class ProductServiceTest {
         String description = "Test desc";
         ArrayList<Category> categories = new ArrayList<>();
         categories.add(category);
+        var user = new User("123@gmail.com", "password", "John", "Doe", null, null);
 
-        when(postgresProductRepository.save(any(PostgresProduct.class))).thenReturn(new PostgresProduct(generatedId, name, categories, price, quantity));
+
+        when(postgresProductRepository.save(any(PostgresProduct.class))).thenReturn(new PostgresProduct(generatedId, name, categories, price, quantity, user));
         when(mongoProductRepository.insert(any(MongoProduct.class))).thenReturn(new MongoProduct(generatedId, description, null));
 
         try {
-            productService.addProduct(name, categories , price, quantity, description, null);
+            productService.addProduct(user, name, categories , price, quantity, description, null);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -83,12 +86,13 @@ public class ProductServiceTest {
     @Test
     void getProductsTest(){
         Category category = new Category("TestCategory");
+        var user = new User("123@gmail.com", "password", "John", "Doe", null, null);
         ArrayList<Category> categories = new ArrayList<>();
         categories.add(category);
         List<MongoProduct> expectedMongoProducts = Arrays.asList(new MongoProduct("1", "desc1", null),
                 new MongoProduct("2",  "desc2", null));
-        List<PostgresProduct> expectedPostgresProducts = Arrays.asList(new PostgresProduct("1", "Product1", categories, 1.3F, 2),
-                new PostgresProduct("2", "Product2", categories, 4F, 4));
+        List<PostgresProduct> expectedPostgresProducts = Arrays.asList(new PostgresProduct("1", "Product1", categories, 1.3F,2, user),
+                new PostgresProduct("2", "Product2", categories, 4F, 4, user));
 
         when(mongoProductRepository.findAll()).thenReturn(expectedMongoProducts);
         when(postgresProductRepository.findAll()).thenReturn(expectedPostgresProducts);
@@ -104,12 +108,13 @@ public class ProductServiceTest {
     void findByTextTest(){
         Category category = new Category("TestCategory");
         ArrayList<Category> categories = new ArrayList<>();
+        var user = new User("123@gmail.com", "password", "John", "Doe", null, null);
         categories.add(category);
         String text = "text";
         List<MongoProduct> expectedMongoProducts = Arrays.asList(new MongoProduct("1",  "desc1", null),
                 new MongoProduct("2",  "desc2", null));
-        List<PostgresProduct> expectedPostgresProducts = Arrays.asList(new PostgresProduct("1", "Product1", categories, 1.3F, 2),
-                new PostgresProduct("2", "Product2", categories, 4F, 4));
+        List<PostgresProduct> expectedPostgresProducts = Arrays.asList(new PostgresProduct("1", "Product1", categories, 1.3F, 2, user),
+                new PostgresProduct("2", "Product2", categories, 4F, 4, user));
 
         when(mongoProductRepository.findAllBy(any(), any())).thenReturn(expectedMongoProducts);
         when(postgresProductRepository.findById(any())).thenReturn(java.util.Optional.ofNullable(expectedPostgresProducts.get(0)));
@@ -122,7 +127,8 @@ public class ProductServiceTest {
 
     @Test
     public void testGetWholeProductByPostgres() {
-        PostgresProduct postgresProduct = new PostgresProduct("123", "name", null, 1.0F, 1);
+        var user = new User("123@gmail.com", "password", "John", "Doe", null, null);
+        PostgresProduct postgresProduct = new PostgresProduct("123", "name", null, 1.0F, 1, user);
         MongoProduct mongoProduct = new MongoProduct("123", "description", null);
         when(mongoProductRepository.findById("123")).thenReturn(Optional.of(mongoProduct));
 
@@ -134,8 +140,8 @@ public class ProductServiceTest {
 
     @Test
     public void testGetWholeSoldProductsByPostgres() {
-        User user = new User();
-        PostgresProduct soldProduct = new PostgresProduct("123", "name", null, 1.0F, 1);
+        var user = new User("123@gmail.com", "password", "John", "Doe", null, null);
+        PostgresProduct soldProduct = new PostgresProduct("123", "name", null, 1.0F, 1, user);
         user.setSoldProducts(List.of(soldProduct));
         MongoProduct mongoProduct = new MongoProduct("123", "description", null);;
         when(mongoProductRepository.findById(any())).thenReturn(Optional.of(mongoProduct));

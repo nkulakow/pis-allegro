@@ -30,14 +30,17 @@ public class ProductService {
 
     private final PostgresProductRepository postgresProductRepository;
 
+    private final UserService userService;
+
     @Autowired
-    ProductService(MongoProductRepository mongoProductRepository, PostgresProductRepository repository){
+    ProductService(MongoProductRepository mongoProductRepository, PostgresProductRepository repository, UserService userService){
         this.mongoProductRepository = mongoProductRepository;
         this.postgresProductRepository  = repository;
+        this.userService = userService;
     }
 
     @Transactional
-    public void addProduct(String name, List<Category> categories, float price, int quantity, String description, MultipartFile photo) throws IOException {
+    public void addProduct(User user, String name, List<Category> categories, float price, int quantity, String description, MultipartFile photo) throws IOException {
         String id = IdGenerator.generateId();
         List<Binary> photos = null;
         if (photo != null) {
@@ -45,9 +48,11 @@ public class ProductService {
             photos = new ArrayList<>();
             photos.add(new Binary(photoData));
         }
-        ProductDTO productDTO = new ProductDTO(id, name, categories, price, quantity, description, photos);
+        ProductDTO productDTO = new ProductDTO(user, id, name, categories, price, quantity, description, photos);
         postgresProductRepository.save(productDTO.getPostgres());
         mongoProductRepository.insert(productDTO.getMongo());
+        user.addSoldProduct(productDTO.getPostgres());
+        userService.addUser(user);
     }
 
     @Transactional

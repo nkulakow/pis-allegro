@@ -43,12 +43,13 @@ public class PostgresProduct {
     public PostgresProduct() {
     }
 
-    public PostgresProduct(String id, String name, List<Category> categories, float price, int quantity) {
+    public PostgresProduct(String id, String name, List<Category> categories, float price, int quantity, User user) {
         this.id = id;
         this.name = name;
         this.categories = categories;
         this.price = price;
         this.quantity = quantity;
+        this.user = user;
     }
 
     @Override

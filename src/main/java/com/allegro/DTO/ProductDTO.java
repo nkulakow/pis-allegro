@@ -3,6 +3,7 @@ package com.allegro.DTO;
 import com.allegro.Document.MongoProduct;
 import com.allegro.Entity.Category;
 import com.allegro.Entity.PostgresProduct;
+import com.allegro.Entity.User;
 import lombok.Getter;
 import lombok.Setter;
 import org.bson.types.Binary;
@@ -41,11 +42,15 @@ public class ProductDTO {
     @Nullable
     private List<Binary> photos;
 
+    @Getter
+    @Setter
+    private User user;
+
     public ProductDTO() {
     }
 
 
-    public ProductDTO(String id, String name, List<Category> category, float price, int quantity, String description, @Nullable List<Binary> photos) {
+    public ProductDTO(User user, String id, String name, List<Category> category, float price, int quantity, String description, @Nullable List<Binary> photos) {
         this.id = id;
         this.name = name;
         this.categories = category;
@@ -63,6 +68,7 @@ public class ProductDTO {
         this.quantity = postgresProduct.getQuantity();
         this.description = mongoProduct.getDescription();
         this.photos = mongoProduct.getPhotos();
+        this.user = postgresProduct.getUser();
     }
 
     public MongoProduct getMongo(){
@@ -70,7 +76,7 @@ public class ProductDTO {
     }
 
     public PostgresProduct getPostgres(){
-        return new PostgresProduct(this.id, this.name, this.categories, this.price, this.quantity);
+        return new PostgresProduct(this.id, this.name, this.categories, this.price, this.quantity, this.user);
     }
 
     @Override

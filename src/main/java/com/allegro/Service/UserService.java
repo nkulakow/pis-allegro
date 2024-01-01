@@ -27,6 +27,10 @@ public class UserService{
         userRepository.save(new User(email, password, name, surname, soldProducts, cartItems));
     }
 
+    public void addUser(User user){
+        userRepository.save(user);
+    }
+
     public User getUserByEmail(String email){
         return userRepository.findByEmail(email);
     }
