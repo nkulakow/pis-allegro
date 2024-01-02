@@ -36,23 +36,30 @@ public class ProductController {
 
     @PostMapping("/add")
     public String AddProduct(
-            @RequestParam String productName,
-            @RequestParam List<String> productCategories,
-            @RequestParam int productPrice,
-            @RequestParam String productDescription,
-            @RequestPart(value = "file", required = false) MultipartFile productPhoto) {
+            @RequestParam("name") String productName,
+            @RequestParam("categories") String productCategories,
+            @RequestParam("price") float productPrice,
+            @RequestParam("description") String productDescription,
+            @RequestParam(value = "photo", required = false) MultipartFile productPhoto) {
         System.out.println(productPhoto == null);
-        try {
-            this.productService.addProduct(
-                    productName,
-                    new ArrayList<>(),
-                    productPrice,
-                    productDescription,
-                    productPhoto);
-            return "Successfully added a new product: ".concat(productName);
-        } catch (IOException e) {
-            return "Could not add a new product: ".concat(productName);
-        }
+        if (productPhoto != null)
+            System.out.println(productPhoto.getSize());
+        System.out.println(productName);
+        System.out.println(productCategories);
+        System.out.println(productPrice);
+        System.out.println(productDescription);
+        return "";
+//        try {
+//            this.productService.addProduct(
+//                    productName,
+//                    new ArrayList<>(),
+//                    productPrice,
+//                    productDescription,
+//                    productPhoto);
+//            return "Successfully added a new product: ".concat(productName);
+//        } catch (IOException e) {
+//            return "Could not add a new product: ".concat(productName);
+//        }
     }
 
     @GetMapping("/get-all")
