@@ -84,8 +84,7 @@ public class ProductService {
         return productList;
     }
 
-    public ArrayList<ProductWithoutCategoryDTO> getProductsWithoutCategory(){
-        var productList = this.getProducts();
+    public ArrayList<ProductWithoutCategoryDTO> getProductsWithoutCategory(List<ProductDTO> productList){
         var productWithoutCategoryList = new ArrayList<ProductWithoutCategoryDTO>();
         for (var product: productList) {
             productWithoutCategoryList.add(new ProductWithoutCategoryDTO(product));

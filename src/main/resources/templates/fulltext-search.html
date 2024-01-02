@@ -33,12 +33,14 @@
         resultDiv.empty();
         if (resultList.length > 0) {
             resultDiv.append("<p>Result:</p>");
-            resultDiv.append("<ul>");
+            for (let j = 0; j < resultList.length; j++) {
+                resultDiv.append("<h2>" + "Product " + resultList[j].name + "</h2>");
+                resultDiv.append("<p>" + "Price: " + resultList[j].price + "</p>");
+                resultDiv.append("<p>" + "Description: " + resultList[j].description + "</p>");
 
-            for (var i = 0; i < resultList.length; i++) {
-                resultDiv.append("<li>" + resultList[i] + "</li>");
+                let link = $('<a>').text("View details").attr('href', '/product-info/' + resultList[j].id);
+                resultDiv.append(link);
             }
-            resultDiv.append("</ul>");
         } else {
             resultDiv.text("No results.");
         }

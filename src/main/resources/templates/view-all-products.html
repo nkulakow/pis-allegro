@@ -33,18 +33,6 @@
                 resultDiv.append("<p>" + "Price: " + data[j].price + "</p>");
                 resultDiv.append("<p>" + "Description: " + data[j].description + "</p>");
 
-                if (data[j].categories && data[j].categories.length > 0) {
-                    resultDiv.append("<h3>" + "Categories:" + "</h3>");
-                    for (let i = 0; i < data[j].categories.length; i++) {
-                        resultDiv.append("<p>" + data[j].categories[i] + "</p>");
-                    }
-                }
-
-                if (data[j].base64EncodedPhotos && data[j].base64EncodedPhotos.length > 0) {
-                    for (let i = 0; i < data[j].base64EncodedPhotos.length; i++) {
-                        resultDiv.append(`<img src="data:image/png;base64,${data[j].base64EncodedPhotos[i]}" alt="Product Image">`);
-                    }
-                }
                 let link = $('<a>').text("View details").attr('href', '/product-info/' + data[j].id);
                 resultDiv.append(link);
             }

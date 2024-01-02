@@ -28,11 +28,9 @@ public class ProductController {
     }
 
     @PostMapping("/fulltext-search-results")
-    public List<String> searchForProducts(@RequestParam String searchPhrase) {
+    public List<ProductWithoutCategoryDTO> searchForProducts(@RequestParam String searchPhrase) {
         List<ProductDTO> productList = this.productService.findByText(searchPhrase);
-        List<String> nameList = new ArrayList<>();
-        for (ProductDTO productDTO : productList) nameList.add(productDTO.getName());
-        return nameList;
+        return this.productService.getProductsWithoutCategory(productList);
     }
 
     @PostMapping("/add")
@@ -67,7 +65,8 @@ public class ProductController {
 
     @GetMapping("/get-all")
     public List<ProductWithoutCategoryDTO> getData() {
-        return this.productService.getProductsWithoutCategory();
+        var products = this.productService.getProducts();
+        return this.productService.getProductsWithoutCategory(products);
     }
 
     @GetMapping("/get-product-info")
