@@ -37,7 +37,7 @@ public class ProductController {
     @PostMapping("/add")
     public String AddProduct(
             @RequestParam("name") String productName,
-            @RequestParam("categories") List<String> productCategories,
+            @RequestParam("categories") List<String> categoriesNames,
             @RequestParam("price") float productPrice,
             @RequestParam("description") String productDescription,
             @RequestParam(value = "photo", required = false) MultipartFile productPhoto) {
@@ -46,13 +46,10 @@ public class ProductController {
 //        System.out.println(productPrice);
 //        System.out.println(productDescription);
 //        System.out.println(productPhoto.getSize());
-        var categories = new ArrayList<Category>();
-        for (var name : productCategories)
-            categories.add(this.categoryService.getCategoryByName(name));
         try {
             this.productService.addProduct(
                     productName,
-                    categories,
+                    this.categoryService.getCategoriesByNames(categoriesNames),
                     productPrice,
                     productDescription,
                     productPhoto);
