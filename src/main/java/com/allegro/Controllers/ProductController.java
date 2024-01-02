@@ -37,29 +37,37 @@ public class ProductController {
     @PostMapping("/add")
     public String AddProduct(
             @RequestParam("name") String productName,
-            @RequestParam("categories") String productCategories,
+            @RequestParam("categories") List<String> productCategories,
             @RequestParam("price") float productPrice,
             @RequestParam("description") String productDescription,
             @RequestParam(value = "photo", required = false) MultipartFile productPhoto) {
-        System.out.println(productPhoto == null);
-        if (productPhoto != null)
-            System.out.println(productPhoto.getSize());
-        System.out.println(productName);
-        System.out.println(productCategories);
-        System.out.println(productPrice);
-        System.out.println(productDescription);
-        return "";
-//        try {
-//            this.productService.addProduct(
-//                    productName,
-//                    new ArrayList<>(),
-//                    productPrice,
-//                    productDescription,
-//                    productPhoto);
-//            return "Successfully added a new product: ".concat(productName);
-//        } catch (IOException e) {
-//            return "Could not add a new product: ".concat(productName);
-//        }
+//        System.out.println(productName);
+//        System.out.println(productCategories);
+//        System.out.println(productPrice);
+//        System.out.println(productDescription);
+//        System.out.println(productPhoto.getSize());
+        var categories = new ArrayList<Category>();
+        for (var name : productCategories)
+            categories.add(this.categoryService.getCategoryByName(name));
+        try {
+            this.productService.addProduct(
+                    productName,
+                    categories,
+                    productPrice,
+                    productDescription,
+                    productPhoto);
+            return "Successfully added a new product: ".concat(productName);
+        } catch (IOException e) {
+            return "Could not add a new product: ".concat(productName);
+        }
+    }
+
+    @GetMapping("/get-categories")
+    public List<String> getCategories() {
+        var names = new ArrayList<String>();
+        for (var cat : this.categoryService.getAllCategories())
+            names.add(cat.getCategoryName());
+        return names;
     }
 
     @GetMapping("/get-all")
