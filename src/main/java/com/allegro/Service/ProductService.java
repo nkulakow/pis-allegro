@@ -49,11 +49,9 @@ public class ProductService {
             photos.add(new Binary(photoData));
         }
         ProductDTO productDTO = new ProductDTO(user, id, name, categories, price, quantity, description, photos);
-        PostgresProduct product = productDTO.getPostgres();
-        postgresProductRepository.save(product);
+        postgresProductRepository.save(productDTO.getPostgres());
         mongoProductRepository.insert(productDTO.getMongo());
-        user.addSoldProduct(product);
-//      userService.addUser(user);
+        user.addSoldProduct(productDTO.getPostgres());
     }
 
     @Transactional

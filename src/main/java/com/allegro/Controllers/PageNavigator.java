@@ -31,10 +31,17 @@ public class PageNavigator {
         return modelAndView;
     }
 
+    @RequestMapping("/register")
+    public ModelAndView getRegisterPage(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("register.html");
+        return modelAndView;
+    }
+
     @RequestMapping("/")
     public ModelAndView getMainPage(){
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("main-page.html");
+        modelAndView.setViewName("login.html");
         return modelAndView;
     }
 

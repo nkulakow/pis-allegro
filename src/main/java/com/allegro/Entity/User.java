@@ -45,12 +45,12 @@ public class User {
     private String surname;
 
     @Getter
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<PostgresProduct> soldProducts;
 
 
     @Getter
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<CartItem> cartItems;
 
 
@@ -88,12 +88,14 @@ public class User {
             this.soldProducts = List.of(product);
         else
             this.soldProducts.add(product);
+        product.setUser(this);
     }
     public void addCartItem(CartItem cartItem){
         if (this.cartItems == null)
             this.cartItems = List.of(cartItem);
         else
             this.cartItems.add(cartItem);
+        cartItem.setUser(this);
     }
 
     @Override
@@ -101,7 +103,7 @@ public class User {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         User otherUser = (User) obj;
-        return this.email.equals((otherUser.getEmail()));
+        return this.getId().equals((otherUser.getId())) && this.getEmail().equals((otherUser.getEmail()));
     }
     @Override
     public int hashCode() {

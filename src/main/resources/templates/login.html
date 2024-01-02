@@ -3,23 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Logowanie</title>
+  <title>Login Page</title>
 </head>
 <body>
 
-<h2>Formularz Logowania</h2>
+<h2>Login Form</h2>
 
 <form action="/user/loginVerify" method="post">
   <label for="email">email:</label>
   <input type="text" id="email" name="email" required>
   <br>
 
-  <label for="password">Hasło:</label>
+  <label for="password">Password:</label>
   <input type="password" id="password" name="password" required>
   <br>
 
   <input type="submit" value="Login">
 </form>
+
+<a href="/register">
+  <button type="button">Register</button>
+</a>
 
 </body>
 </html>
