@@ -38,10 +38,10 @@ public class PageNavigator {
         return modelAndView;
     }
 
-    @RequestMapping("/")
+    @RequestMapping("/mainPage")
     public ModelAndView getMainPage(){
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("login.html");
+        modelAndView.setViewName("main-page.html");
         return modelAndView;
     }
 
