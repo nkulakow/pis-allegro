@@ -1,6 +1,7 @@
 package com.allegro.Controllers;
 
 import com.allegro.DTO.ProductDTO;
+import com.allegro.DTO.ProductWithoutCategoryDTO;
 import com.allegro.Entity.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -61,10 +62,7 @@ public class ProductController {
 
     @GetMapping("/get-categories")
     public List<String> getCategories() {
-        var names = new ArrayList<String>();
-        for (var cat : this.categoryService.getAllCategories())
-            names.add(cat.getCategoryName());
-        return names;
+        return categoryService.getAllCategoryNames();
     }
 
 //    @GetMapping("/get-product-info")
@@ -73,7 +71,7 @@ public class ProductController {
 //    }
 
     @GetMapping("/get-all")
-    public List<ProductDTO> getData() {
-        return this.productService.getProducts();
+    public List<ProductWithoutCategoryDTO> getData() {
+        return this.productService.getProductsWithoutCategory();
     }
 }

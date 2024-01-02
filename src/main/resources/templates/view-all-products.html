@@ -19,7 +19,7 @@
                 type: "GET",
                 url: "/products/get-all",
                 success: function (data) {
-                    console.log("OK")
+                    console.log(data.length)
                     displayResult(data);
                 }
             });

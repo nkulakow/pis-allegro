@@ -1,5 +1,6 @@
 package com.allegro.Service;
 
+import com.allegro.DTO.ProductWithoutCategoryDTO;
 import com.allegro.Document.MongoProduct;
 import com.allegro.Entity.Category;
 import com.allegro.Entity.PostgresProduct;
@@ -28,10 +29,13 @@ public class ProductService {
 
     private final PostgresProductRepository postgresProductRepository;
 
+    private final CategoryService categoryService;
+
     @Autowired
-    ProductService(MongoProductRepository mongoProductRepository, PostgresProductRepository repository){
+    ProductService(MongoProductRepository mongoProductRepository, PostgresProductRepository repository, CategoryService categoryService){
         this.mongoProductRepository = mongoProductRepository;
         this.postgresProductRepository  = repository;
+        this.categoryService = categoryService;
     }
 
     @Transactional
@@ -46,6 +50,12 @@ public class ProductService {
         ProductDTO productDTO = new ProductDTO(id, name, categories, price, description, photos);
         postgresProductRepository.save(productDTO.getPostgres());
         mongoProductRepository.insert(productDTO.getMongo());
+    }
+
+    @Transactional
+    public void saveProduct(ProductDTO productDTO){
+        mongoProductRepository.save(productDTO.getMongo());
+        postgresProductRepository.save(productDTO.getPostgres());
     }
 
     public List<MongoProduct> getMongoProducts(){
@@ -73,6 +83,25 @@ public class ProductService {
         }
         return productList;
     }
+
+    public ArrayList<ProductWithoutCategoryDTO> getProductsWithoutCategory(){
+        var productList = this.getProducts();
+        var productWithoutCategoryList = new ArrayList<ProductWithoutCategoryDTO>();
+        for (var product: productList) {
+            productWithoutCategoryList.add(new ProductWithoutCategoryDTO(product));
+        }
+        return productWithoutCategoryList;
+    }
+
+    public ArrayList<ProductDTO> getProductsWithCategory(ArrayList<ProductWithoutCategoryDTO> productWithoutCategoryList){
+        var productList = new ArrayList<ProductDTO>();
+        for (var product: productWithoutCategoryList) {
+            var categories = categoryService.getCategoriesByNames(product.getCategories());
+            productList.add(new ProductDTO(product.getId(), product.getName(), categories, product.getPrice(), product.getDescription(), product.getPhotos()));
+        }
+        return productList;
+    }
+
 
     public List<ProductDTO> findByText(String text) {
         TextCriteria criteria = TextCriteria.forDefaultLanguage().matchingAny(text);

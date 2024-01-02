@@ -30,6 +30,9 @@ public class ProductServiceTest {
     @Mock
     private PostgresProductRepository postgresProductRepository;
 
+    @Mock
+    private CategoryService categoryService;
+
     @InjectMocks
     private ProductService productService;
 
@@ -37,7 +40,8 @@ public class ProductServiceTest {
     void setUp() {
         postgresProductRepository = mock(PostgresProductRepository.class);
         mongoProductRepository = mock(MongoProductRepository.class);
-        productService = new ProductService(mongoProductRepository, postgresProductRepository);
+        categoryService = mock(CategoryService.class);
+        productService = new ProductService(mongoProductRepository, postgresProductRepository, categoryService);
     }
 
     @Test
