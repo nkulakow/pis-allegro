@@ -40,7 +40,7 @@ public class ProductService {
     }
 
     @Transactional
-    public void addProduct(User user, String name, List<Category> categories, float price, int quantity, String description, MultipartFile photo) throws IOException {
+    public void addProduct(User user, String name, List<Category> categories, int price, int quantity, String description, MultipartFile photo) throws IOException {
         String id = IdGenerator.generateId();
         List<Binary> photos = null;
         if (photo != null) {
