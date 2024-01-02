@@ -6,6 +6,8 @@ import lombok.Setter;
 import org.bson.types.Binary;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Base64;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,6 +33,10 @@ public class ProductWithoutCategoryDTO {
     @Nullable
     private List<Binary> photos;
 
+    @Getter
+    @Setter
+    private List<String> base64EncodedPhotos;
+
     public ProductWithoutCategoryDTO() {
     }
 
@@ -40,6 +46,22 @@ public class ProductWithoutCategoryDTO {
         this.price = productDTO.getPrice();
         this.description = productDTO.getDescription();
         this.photos = productDTO.getPhotos();
+        this.base64EncodedPhotos = this.getBase64EncodedPhotos();
         this.categories = productDTO.getCategories().stream().map(Category::getCategoryName).collect(Collectors.toList());
+    }
+
+    public List<String> getBase64EncodedPhotos() {
+        if (photos == null) {
+            return Collections.emptyList();
+        }
+
+        return photos.stream()
+                .map(this::convertBinaryToBase64)
+                .collect(Collectors.toList());
+    }
+
+    private String convertBinaryToBase64(Binary binary) {
+        byte[] data = binary.getData();
+        return Base64.getEncoder().encodeToString(data);
     }
 }
