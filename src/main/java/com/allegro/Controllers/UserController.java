@@ -29,7 +29,7 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
 
-    UserService userService;
+    private UserService userService;
 
     @Autowired
     public UserController(UserService userService){
@@ -39,8 +39,8 @@ public class UserController {
     @PostMapping("/loginVerify")
     public ModelAndView login(@RequestParam  String email, @RequestParam String password, HttpSession session) {
         if (this.userService.login(email, password)) {
-            session.setAttribute("login", email);
-            session.setAttribute("password", password);
+           session.setAttribute("login", email);
+           session.setAttribute("password", password);
             return new ModelAndView("main-page.html");
         }
         return new ModelAndView("loginError.html");

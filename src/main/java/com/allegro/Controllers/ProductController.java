@@ -50,7 +50,7 @@ public class ProductController {
             @RequestPart(value = "file", required = false) MultipartFile productPhoto, HttpSession session) {
         System.out.println(productPhoto == null);
         // @TODO: logged in user
-        var user = this.userService.getUserByEmail((String) session.getAttribute("login"));
+        var user = this.userService.getUserByEmail((String)session.getAttribute("login"));
         var quantity = 2;
         try {
             this.productService.addProduct(user,
