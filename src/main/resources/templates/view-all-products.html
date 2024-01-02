@@ -45,11 +45,8 @@
                         resultDiv.append(`<img src="data:image/png;base64,${data[j].base64EncodedPhotos[i]}" alt="Product Image">`);
                     }
                 }
-                let button = $('<button>').text("View details");
-                button.click(function () {
-                    displayDetails(data[j].id);
-                });
-                resultDiv.append(button);
+                let link = $('<a>').text("View details").attr('href', '/product-info/' + data[j].id);
+                resultDiv.append(link);
             }
 
             function displayDetails(productId) {
