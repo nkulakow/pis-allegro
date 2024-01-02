@@ -48,8 +48,7 @@ public class ProductController {
             @RequestPart(value = "file", required = false) MultipartFile productPhoto) {
         System.out.println(productPhoto == null);
         // @TODO: logged in user
-        var user = new User("123@gmail.com", "password", "John", "Doe", null, null);
-        this.userService.addUser(user);
+        var user = this.userService.getUserByEmail("123@gmail.com");
         var quantity = 2;
         try {
             this.productService.addProduct(user,
