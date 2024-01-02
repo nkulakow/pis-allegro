@@ -8,7 +8,6 @@
 </head>
 <body>
     <div id="responseMessage">
-        <h1 th:text="${productId}"></h1>
     </div>
 
     <script th:inline="javascript">
@@ -17,18 +16,33 @@
 
     <script>
         $(document).ready(function () {
-            // let productId = {
-            //     productId: productId
-            // };
-            console.log(productId);
-            // $.ajax({
-            //     type: "GET",
-            //     url: "/products/get-product-info",
-            //     data: {},
-            //     success: function (data) {
-            //         displayResult(data);
-            //     }
-            // });
+            $.ajax({
+                type: "GET",
+                url: "/products/get-product-info",
+                data: {productId: productId},
+                success: function (product) {
+                    displayResult(product);
+                }
+            });
+            function displayResult(product) {
+                let resultDiv = $("#responseMessage");
+                resultDiv.append("<h1>" + "Product " + product.name + "</h1>");
+                resultDiv.append("<p>" + "Price: " + product.price + "</p>");
+                resultDiv.append("<p>" + "Description: " + product.description + "</p>");
+
+                if (product.categories && product.categories.length > 0) {
+                    resultDiv.append("<h3>" + "Categories:" + "</h3>");
+                    for (let i = 0; i < product.categories.length; i++) {
+                        resultDiv.append("<p>" + product.categories[i] + "</p>");
+                    }
+                }
+
+                if (product.base64EncodedPhotos && product.base64EncodedPhotos.length > 0) {
+                    for (let i = 0; i < product.base64EncodedPhotos.length; i++) {
+                        resultDiv.append(`<img src="data:image/png;base64,${product.base64EncodedPhotos[i]}" alt="Product Image">`);
+                    }
+                }
+            }
         });
     </script>
     <h2>Comments</h2>

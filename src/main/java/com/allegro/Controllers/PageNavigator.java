@@ -62,7 +62,7 @@ public class PageNavigator {
         return modelAndView;
     }
 
-    @GetMapping("/product-info/{productId}")
+    @RequestMapping("/product-info/{productId}")
     public ModelAndView getProductInfoPage(@PathVariable String productId) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("productId", productId);

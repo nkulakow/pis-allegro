@@ -48,20 +48,6 @@
                 let link = $('<a>').text("View details").attr('href', '/product-info/' + data[j].id);
                 resultDiv.append(link);
             }
-
-            function displayDetails(productId) {
-                console.log("Displaying details for product:", productId);
-                $.ajax({
-                    type: "GET",
-                    url: "/product-info",
-                    data: {productId: productId},
-                    success: function (htmlContent) {
-                        document.open();
-                        document.write(htmlContent);
-                        document.close();
-                    }
-                });
-            }
         }
     </script>
 </body>
