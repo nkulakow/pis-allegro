@@ -67,10 +67,13 @@ public class ProductController {
         return names;
     }
 
+//    @GetMapping("/get-product-info")
+//    public ProductDTO getProductInfo(@RequestParam String producdId) {
+////        var product = this.productService.get
+//    }
+
     @GetMapping("/get-all")
-    public ResponseEntity<ProductDTO> getData() {
-        ProductDTO responseData = this.productService.getProducts().get(3);
-        System.out.println(responseData.getPhotos()==null);
-        return ResponseEntity.ok(responseData);
+    public List<ProductDTO> getData() {
+        return this.productService.getProducts();
     }
 }
