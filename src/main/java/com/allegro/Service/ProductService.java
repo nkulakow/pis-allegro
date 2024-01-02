@@ -134,4 +134,13 @@ public class ProductService {
 
         return productList;
     }
+
+    public ProductDTO getProductById(String productId) {
+        var postgresProd = this.postgresProductRepository.findById(productId);
+        var mongoProd = this.mongoProductRepository.findById(productId);
+        if (postgresProd.isPresent() && mongoProd.isPresent()){
+            return new ProductDTO(postgresProd.get(), mongoProd.get());
+        }
+        return null;
+    }
 }

@@ -65,13 +65,13 @@ public class ProductController {
         return categoryService.getAllCategoryNames();
     }
 
-//    @GetMapping("/get-product-info")
-//    public ProductDTO getProductInfo(@RequestParam String producdId) {
-////        var product = this.productService.get
-//    }
-
     @GetMapping("/get-all")
     public List<ProductWithoutCategoryDTO> getData() {
         return this.productService.getProductsWithoutCategory();
+    }
+
+    @GetMapping("/get-product-info")
+    public ProductWithoutCategoryDTO getProductInfo(@RequestParam String productId) {
+        return new ProductWithoutCategoryDTO(this.productService.getProductById(productId));
     }
 }
