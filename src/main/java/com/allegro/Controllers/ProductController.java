@@ -94,4 +94,22 @@ public class ProductController {
         this.categoryService.addCategory("film");
         this.categoryService.addCategory("book");
     }
+
+    @GetMapping("/get-user-products")
+    public List<ProductWithoutCategoryDTO> getUserProducts(HttpSession session) {
+        String login = (String)session.getAttribute("login");
+        if(login == null){
+            return new ArrayList<>();
+        }
+        var user = this.userService.getUserByEmail(login);
+        var user_id = user.getId();
+        var products = this.productService.getProductByUser(user_id);
+        return this.productService.getProductsWithoutCategory(products);
+    }
+
+    @GetMapping("/get-products-in-categories")
+    public List<ProductWithoutCategoryDTO> getProductsInCategories() {
+        var products = this.productService.getProductByCategories(List.of("food", "book"));
+        return this.productService.getProductsWithoutCategory(products);
+    }
 }

@@ -31,20 +31,18 @@ public class ProductService {
 
     private final PostgresProductRepository postgresProductRepository;
 
-    private final UserService userService;
 
     private final CategoryService categoryService;
 
     @Autowired
-    ProductService(MongoProductRepository mongoProductRepository, PostgresProductRepository repository, UserService userService, CategoryService categoryService){
+    ProductService(MongoProductRepository mongoProductRepository, PostgresProductRepository repository, CategoryService categoryService){
         this.mongoProductRepository = mongoProductRepository;
         this.postgresProductRepository  = repository;
-        this.userService = userService;
         this.categoryService = categoryService;
     }
 
     @Transactional
-    public void addProduct(User user, String name, List<Category> categories, int price, int quantity, String description, MultipartFile photo) throws IOException {
+    public void addProduct(User user, String name, List<Category> categories, float price, int quantity, String description, MultipartFile photo) throws IOException {
         String id = IdGenerator.generateId();
         List<Binary> photos = null;
         if (photo != null) {
@@ -115,31 +113,34 @@ public class ProductService {
 
 
     public List<ProductDTO> findByText(String text) {
-        TextCriteria criteria = TextCriteria.forDefaultLanguage().matchingAny(text);
-        var postgresList = postgresProductRepository.searchProducts(text);
-        var mongoList = mongoProductRepository.findAllBy(criteria, Sort.by("description"));
+        String[] wordArray = text.split("\\s+");
         var productList = new ArrayList<ProductDTO>();
         var seenProductIds = new HashSet<String>();
+        for (String word: wordArray) {
+            TextCriteria criteria = TextCriteria.forDefaultLanguage().matchingAny(word);
+            var postgresList = postgresProductRepository.searchProducts(word);
+            var mongoList = mongoProductRepository.findAllBy(criteria, Sort.by("description"));
 
-        for (var postProd : postgresList) {
-            var targetId = postProd.getId();
-            if (!seenProductIds.contains(targetId)) {
-                Optional<MongoProduct> mProdFound = mongoProductRepository.findById(targetId);
-                mProdFound.ifPresent(mongoProduct -> {
-                    productList.add(new ProductDTO(postProd, mongoProduct));
-                    seenProductIds.add(targetId);
-                });
+            for (var postProd : postgresList) {
+                var targetId = postProd.getId();
+                if (!seenProductIds.contains(targetId)) {
+                    Optional<MongoProduct> mProdFound = mongoProductRepository.findById(targetId);
+                    mProdFound.ifPresent(mongoProduct -> {
+                        productList.add(new ProductDTO(postProd, mongoProduct));
+                        seenProductIds.add(targetId);
+                    });
+                }
             }
-        }
 
-        for (var mongoProd : mongoList) {
-            var targetId = mongoProd.getId();
-            if (!seenProductIds.contains(targetId)) {
-                Optional<PostgresProduct> pProdFound = postgresProductRepository.findById(targetId);
-                pProdFound.ifPresent(postgresProd -> {
-                    productList.add(new ProductDTO(postgresProd, mongoProd));
-                    seenProductIds.add(targetId);
-                });
+            for (var mongoProd : mongoList) {
+                var targetId = mongoProd.getId();
+                if (!seenProductIds.contains(targetId)) {
+                    Optional<PostgresProduct> pProdFound = postgresProductRepository.findById(targetId);
+                    pProdFound.ifPresent(postgresProd -> {
+                        productList.add(new ProductDTO(postgresProd, mongoProd));
+                        seenProductIds.add(targetId);
+                    });
+                }
             }
         }
 
@@ -193,5 +194,25 @@ public class ProductService {
             return new ProductDTO(postgresProd.get(), mongoProd.get());
         }
         return null;
+    }
+
+    public List<ProductDTO> getProductByUser(String user_id) {
+        ArrayList<ProductDTO> productDTOS = new ArrayList<>();
+        var postgresProd = this.postgresProductRepository.findByUser_Id(user_id);
+        for (PostgresProduct product : postgresProd) {
+            var mongoProd = this.mongoProductRepository.findById(product.getId());
+            mongoProd.ifPresent(mongoProduct -> productDTOS.add(new ProductDTO(product, mongoProduct)));
+        }
+        return productDTOS;
+    }
+
+    public List<ProductDTO> getProductByCategories(List<String> categories) {
+        ArrayList<ProductDTO> productDTOS = new ArrayList<>();
+        var postgresProd = this.postgresProductRepository.findByCategories_CategoryNameIn(categories);
+        for (PostgresProduct product : postgresProd) {
+            var mongoProd = this.mongoProductRepository.findById(product.getId());
+            mongoProd.ifPresent(mongoProduct -> productDTOS.add(new ProductDTO(product, mongoProduct)));
+        }
+        return productDTOS;
     }
 }

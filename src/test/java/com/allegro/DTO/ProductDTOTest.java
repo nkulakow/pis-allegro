@@ -15,7 +15,7 @@ public class ProductDTOTest {
         String id = "abc";
         String name = "abc";
         String description = "abc";
-        int price = 2;
+        float price = 2;
         int quantity = 2;
         ProductDTO product = new ProductDTO(user, id, name, null, price, quantity, description, null);
         assertEquals(user, product.getUser());

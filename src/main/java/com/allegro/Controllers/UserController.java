@@ -60,7 +60,7 @@ public class UserController {
             modelAndView.addObject("paragraphText", paragraphText);
             return modelAndView;
         }
-        User newUser = new User(email, password, name, surname, new LinkedList<PostgresProduct>(), new LinkedList<CartItem>());
+        User newUser = new User(email, password, name, surname, new ArrayList<>(), new ArrayList<>());
         this.userService.addUser(newUser);
         return new ModelAndView("login");
     }

@@ -39,9 +39,6 @@ public class ProductWithoutCategoryDTO {
     @Nullable
     private List<Binary> photos;
 
-    @Getter
-    @Setter
-    private List<String> base64EncodedPhotos;
 
     @Getter
     @Setter
@@ -56,7 +53,7 @@ public class ProductWithoutCategoryDTO {
         this.price = productDTO.getPrice();
         this.description = productDTO.getDescription();
         this.photos = productDTO.getPhotos();
-        this.base64EncodedPhotos = this.getBase64EncodedPhotos();
+        this.quantity = productDTO.getQuantity();
         this.categories = productDTO.getCategories().stream().map(Category::getCategoryName).collect(Collectors.toList());
     }
 
@@ -74,4 +71,6 @@ public class ProductWithoutCategoryDTO {
         byte[] data = binary.getData();
         return Base64.getEncoder().encodeToString(data);
     }
+
+
 }

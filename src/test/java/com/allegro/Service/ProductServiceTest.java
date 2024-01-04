@@ -44,8 +44,7 @@ public class ProductServiceTest {
     void setUp() {
         postgresProductRepository = mock(PostgresProductRepository.class);
         mongoProductRepository = mock(MongoProductRepository.class);
-        UserService userService = mock(UserService.class);
-        productService = new ProductService(mongoProductRepository, postgresProductRepository, userService, categoryService);
+        productService = new ProductService(mongoProductRepository, postgresProductRepository, categoryService);
     }
 
 
@@ -54,7 +53,7 @@ public class ProductServiceTest {
         String name = "TestProduct";
         Category category = new Category("TestCategory");
         String generatedId = "generatedId";
-        int price = 2;
+        float price = 2.F;
         int quantity = 2;
         String description = "Test desc";
         ArrayList<Category> categories = new ArrayList<>();
@@ -95,8 +94,8 @@ public class ProductServiceTest {
         categories.add(category);
         List<MongoProduct> expectedMongoProducts = Arrays.asList(new MongoProduct("1", "desc1", null),
                 new MongoProduct("2",  "desc2", null));
-        List<PostgresProduct> expectedPostgresProducts = Arrays.asList(new PostgresProduct("1", "Product1", categories, 1,2, user),
-                new PostgresProduct("2", "Product2", categories, 4, 4, user));
+        List<PostgresProduct> expectedPostgresProducts = Arrays.asList(new PostgresProduct("1", "Product1", categories, 1.F,2, user),
+                new PostgresProduct("2", "Product2", categories, 4.F, 4, user));
 
         when(mongoProductRepository.findAll()).thenReturn(expectedMongoProducts);
         when(postgresProductRepository.findAll()).thenReturn(expectedPostgresProducts);
@@ -117,8 +116,8 @@ public class ProductServiceTest {
         String text = "text";
         List<MongoProduct> expectedMongoProducts = Arrays.asList(new MongoProduct("1",  "desc1", null),
                 new MongoProduct("2",  "desc2", null));
-        List<PostgresProduct> expectedPostgresProducts = Arrays.asList(new PostgresProduct("1", "Product1", categories, 1, 2, user),
-                new PostgresProduct("2", "Product2", categories, 4, 4, user));
+        List<PostgresProduct> expectedPostgresProducts = Arrays.asList(new PostgresProduct("1", "Product1", categories, 1.F, 2, user),
+                new PostgresProduct("2", "Product2", categories, 4.F, 4, user));
 
         when(mongoProductRepository.findAllBy(any(), any())).thenReturn(expectedMongoProducts);
         when(postgresProductRepository.searchProducts(any())).thenReturn(expectedPostgresProducts);
@@ -133,7 +132,7 @@ public class ProductServiceTest {
     @Test
     public void testGetWholeProductByPostgres() {
         var user = new User("123@gmail.com", "password", "John", "Doe", null, null);
-        PostgresProduct postgresProduct = new PostgresProduct("123", "name", null, 1, 1, user);
+        PostgresProduct postgresProduct = new PostgresProduct("123", "name", null, 1.F, 1, user);
         MongoProduct mongoProduct = new MongoProduct("123", "description", null);
         when(mongoProductRepository.findById("123")).thenReturn(Optional.of(mongoProduct));
 
@@ -146,7 +145,7 @@ public class ProductServiceTest {
     @Test
     public void testGetWholeSoldProductsByPostgres() {
         var user = new User("123@gmail.com", "password", "John", "Doe", null, null);
-        PostgresProduct soldProduct = new PostgresProduct("123", "name", null, 1, 1, user);
+        PostgresProduct soldProduct = new PostgresProduct("123", "name", null, 1.F, 1, user);
         user.addSoldProduct(soldProduct);
         MongoProduct mongoProduct = new MongoProduct("123", "description", null);;
         when(mongoProductRepository.findById(any())).thenReturn(Optional.of(mongoProduct));
@@ -164,7 +163,7 @@ public class ProductServiceTest {
         String name = "TestProduct";
         Category category = new Category("TestCategory");
         String generatedId = "generatedId";
-        int price = 2;
+        float price = 2.F;
         int quantity = 2;
         String description = "Test desc";
         ArrayList<Category> categories = new ArrayList<>();
@@ -193,7 +192,7 @@ public class ProductServiceTest {
     @Test
     void getWholeProductByPostgreswCartItem() {
         var user = new User("123@gmail.com", "password", "John", "Doe", null, null);
-        var postProd = new PostgresProduct("123", "name", null, 1, 1, user);
+        var postProd = new PostgresProduct("123", "name", null, 1.F, 1, user);
         var mongoProd = new MongoProduct("123", "description", null);
         CartItem cartItem = new CartItem(user, postProd, 1);
 
@@ -207,7 +206,7 @@ public class ProductServiceTest {
     @Test
     void getWholeProductByPostgreswUser() {
         var user = new User("123@gmail.com", "password", "John", "Doe", null, null);
-        var postProd = new PostgresProduct("123", "name", null, 1, 1, user);
+        var postProd = new PostgresProduct("123", "name", null, 1.F, 1, user);
         var mongoProd = new MongoProduct("123", "description", null);
         CartItem cartItem = new CartItem(user, postProd, 1);
         user.addCartItem(cartItem);

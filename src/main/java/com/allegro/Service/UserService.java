@@ -35,6 +35,10 @@ public class UserService{
     public User getUserByEmail(String email){
         return userRepository.findByEmail(email);
     }
+    public User getUserById(String id){
+        var user = userRepository.findById(id);
+        return user.orElse(null);
+    }
 
     public boolean login(String email, String password){
         User user = userRepository.findByEmail(email);

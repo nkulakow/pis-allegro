@@ -30,7 +30,7 @@ public class PostgresProduct {
 
     @Column
     @Getter
-    private int price;
+    private float price;
 
     @Column
     @Getter
@@ -43,7 +43,7 @@ public class PostgresProduct {
     public PostgresProduct() {
     }
 
-    public PostgresProduct(String id, String name, List<Category> categories, int price, int quantity, User user) {
+    public PostgresProduct(String id, String name, List<Category> categories, float price, int quantity, User user) {
         this.id = id;
         this.name = name;
         this.categories = categories;

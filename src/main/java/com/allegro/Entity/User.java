@@ -47,11 +47,11 @@ public class User {
 
     @Getter
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private ArrayList<PostgresProduct> soldProducts;
+    private List<PostgresProduct> soldProducts;
 
     @Getter
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private ArrayList<CartItem> cartItems;
+    private List<CartItem> cartItems;
 
 
 
@@ -83,18 +83,21 @@ public class User {
         }
     }
 
-    public void addSoldProduct(PostgresProduct product){
-        if (this.soldProducts == null)
-            this.soldProducts = new ArrayList<>(List.of(product));
-        else
-            this.soldProducts.add(product);
+    public void addSoldProduct(PostgresProduct product) {
+        if (this.soldProducts == null) {
+            this.soldProducts = new ArrayList<>();
+        }
+
+        this.soldProducts.add(product);
         product.setUser(this);
     }
-    public void addCartItem(CartItem cartItem){
-        if (this.cartItems == null)
-            this.cartItems =  new ArrayList<>(List.of(cartItem));
-        else
-            this.cartItems.add(cartItem);
+
+    public void addCartItem(CartItem cartItem) {
+        if (this.cartItems == null) {
+            this.cartItems = new ArrayList<>();
+        }
+
+        this.cartItems.add(cartItem);
         cartItem.setUser(this);
     }
 
