@@ -6,8 +6,8 @@ import com.allegro.Entity.User;
 import com.allegro.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.LinkedList;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,7 +24,7 @@ public class UserService{
         return userRepository.findAll();
     }
 
-    public void addUser(String email, String password, String name, String surname, List<PostgresProduct> soldProducts, List<CartItem> cartItems ){
+    public void addUser(String email, String password, String name, String surname, ArrayList<PostgresProduct> soldProducts, ArrayList<CartItem> cartItems ){
         userRepository.save(new User(email, password, name, surname, soldProducts, cartItems));
     }
 
@@ -41,7 +41,7 @@ public class UserService{
         if(user == null){
             return false;
         }
-        User toCompare = new User(email, password, "toCompare", "toCompare", new LinkedList<PostgresProduct>(), new LinkedList<CartItem>());
+        User toCompare = new User(email, password, "toCompare", "toCompare", new ArrayList<>(), new ArrayList<>());
         return user.getPasswordHash().equals(toCompare.getPasswordHash());
     }
 }

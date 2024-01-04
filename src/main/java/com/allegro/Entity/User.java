@@ -6,6 +6,7 @@ import lombok.Getter;
 import org.hibernate.annotations.GenericGenerator;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -46,24 +47,23 @@ public class User {
 
     @Getter
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<PostgresProduct> soldProducts;
-
+    private ArrayList<PostgresProduct> soldProducts;
 
     @Getter
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<CartItem> cartItems;
+    private ArrayList<CartItem> cartItems;
 
 
 
     public User() {
     }
 
-    public User(String email, String password, String name, String surname, List<PostgresProduct> soldProducts, List<CartItem> cartItems) {
+    public User(String email, String password, String name, String surname, ArrayList<PostgresProduct> soldProducts, ArrayList<CartItem> cartItems) {
         this.email = email;
         this.passwordHash = hashPassword(password);
         this.name = name;
         this.surname = surname;
-        this.soldProducts = soldProducts;
+        this.soldProducts =  soldProducts;
         this.cartItems = cartItems;
     }
 
@@ -85,14 +85,14 @@ public class User {
 
     public void addSoldProduct(PostgresProduct product){
         if (this.soldProducts == null)
-            this.soldProducts = List.of(product);
+            this.soldProducts = new ArrayList<>(List.of(product));
         else
             this.soldProducts.add(product);
         product.setUser(this);
     }
     public void addCartItem(CartItem cartItem){
         if (this.cartItems == null)
-            this.cartItems = List.of(cartItem);
+            this.cartItems =  new ArrayList<>(List.of(cartItem));
         else
             this.cartItems.add(cartItem);
         cartItem.setUser(this);

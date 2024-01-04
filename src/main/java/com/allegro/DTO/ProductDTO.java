@@ -27,7 +27,7 @@ public class ProductDTO {
     private List<Category> categories;
     @Getter
     @Setter
-    private float price;
+    private int price;
 
     @Getter
     @Setter
@@ -50,7 +50,7 @@ public class ProductDTO {
     }
 
 
-    public ProductDTO(User user, String id, String name, List<Category> category, float price, int quantity, String description, @Nullable List<Binary> photos) {
+    public ProductDTO(User user, String id, String name, List<Category> category, int price, int quantity, String description, @Nullable List<Binary> photos) {
         this.id = id;
         this.name = name;
         this.categories = category;
