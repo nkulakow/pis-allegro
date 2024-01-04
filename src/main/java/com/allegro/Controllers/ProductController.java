@@ -1,9 +1,8 @@
 package com.allegro.Controllers;
 
 import com.allegro.DTO.ProductDTO;
+import com.allegro.DTO.ProductWithoutCategoryDTO;
 import com.allegro.Entity.Category;
-import com.allegro.Entity.User;
-import com.allegro.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,40 +21,35 @@ public class ProductController {
     ProductService productService;
     CategoryService categoryService;
 
-    UserService userService;
-
     @Autowired
-    public ProductController(ProductService productService, CategoryService categoryService, UserService userService){
+    public ProductController(ProductService productService, CategoryService categoryService){
         this.productService = productService;
         this.categoryService = categoryService;
-        this.userService = userService;
     }
 
     @PostMapping("/fulltext-search-results")
-    public List<String> searchForProducts(@RequestParam String searchPhrase) {
+    public List<ProductWithoutCategoryDTO> searchForProducts(@RequestParam String searchPhrase) {
         List<ProductDTO> productList = this.productService.findByText(searchPhrase);
-        List<String> nameList = new ArrayList<>();
-        for (ProductDTO productDTO : productList) nameList.add(productDTO.getName());
-        return nameList;
+        return this.productService.getProductsWithoutCategory(productList);
     }
 
     @PostMapping("/add")
     public String AddProduct(
-            @RequestParam String productName,
-            @RequestParam List<String> productCategories,
-            @RequestParam int productPrice,
-            @RequestParam String productDescription,
-            @RequestPart(value = "file", required = false) MultipartFile productPhoto) {
-        System.out.println(productPhoto == null);
-        // @TODO: logged in user
-        var user = this.userService.getUserByEmail("123@gmail.com");
-        var quantity = 2;
+            @RequestParam("name") String productName,
+            @RequestParam("categories") List<String> categoriesNames,
+            @RequestParam("price") float productPrice,
+            @RequestParam("description") String productDescription,
+            @RequestParam(value = "photo", required = false) MultipartFile productPhoto) {
+//        System.out.println(productName);
+//        System.out.println(productCategories);
+//        System.out.println(productPrice);
+//        System.out.println(productDescription);
+//        System.out.println(productPhoto.getSize());
         try {
-            this.productService.addProduct(user,
+            this.productService.addProduct(
                     productName,
-                    new ArrayList<>(),
+                    this.categoryService.getCategoriesByNames(categoriesNames),
                     productPrice,
-                    quantity,
                     productDescription,
                     productPhoto);
             return "Successfully added a new product: ".concat(productName);
@@ -64,10 +58,19 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/get-categories")
+    public List<String> getCategories() {
+        return categoryService.getAllCategoryNames();
+    }
+
     @GetMapping("/get-all")
-    public ResponseEntity<ProductDTO> getData() {
-        ProductDTO responseData = this.productService.getProducts().get(3);
-        System.out.println(responseData.getPhotos()==null);
-        return ResponseEntity.ok(responseData);
+    public List<ProductWithoutCategoryDTO> getData() {
+        var products = this.productService.getProducts();
+        return this.productService.getProductsWithoutCategory(products);
+    }
+
+    @GetMapping("/get-product-info")
+    public ProductWithoutCategoryDTO getProductInfo(@RequestParam String productId) {
+        return new ProductWithoutCategoryDTO(this.productService.getProductById(productId));
     }
 }

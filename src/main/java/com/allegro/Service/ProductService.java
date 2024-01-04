@@ -1,5 +1,6 @@
 package com.allegro.Service;
 
+import com.allegro.DTO.ProductWithoutCategoryDTO;
 import com.allegro.Document.MongoProduct;
 import com.allegro.Entity.CartItem;
 import com.allegro.Entity.Category;
@@ -32,11 +33,14 @@ public class ProductService {
 
     private final UserService userService;
 
+    private final CategoryService categoryService;
+
     @Autowired
-    ProductService(MongoProductRepository mongoProductRepository, PostgresProductRepository repository, UserService userService){
+    ProductService(MongoProductRepository mongoProductRepository, PostgresProductRepository repository, UserService userService, CategoryService categoryService){
         this.mongoProductRepository = mongoProductRepository;
         this.postgresProductRepository  = repository;
         this.userService = userService;
+        this.categoryService = categoryService;
     }
 
     @Transactional
@@ -57,6 +61,12 @@ public class ProductService {
 
     @Transactional
     public void updateProduct(ProductDTO productDTO){
+        mongoProductRepository.save(productDTO.getMongo());
+        postgresProductRepository.save(productDTO.getPostgres());
+    }
+
+    @Transactional
+    public void saveProduct(ProductDTO productDTO){
         mongoProductRepository.save(productDTO.getMongo());
         postgresProductRepository.save(productDTO.getPostgres());
     }
@@ -86,6 +96,24 @@ public class ProductService {
         }
         return productList;
     }
+
+    public ArrayList<ProductWithoutCategoryDTO> getProductsWithoutCategory(List<ProductDTO> productList){
+        var productWithoutCategoryList = new ArrayList<ProductWithoutCategoryDTO>();
+        for (var product: productList) {
+            productWithoutCategoryList.add(new ProductWithoutCategoryDTO(product));
+        }
+        return productWithoutCategoryList;
+    }
+
+    public ArrayList<ProductDTO> getProductsWithCategory(ArrayList<ProductWithoutCategoryDTO> productWithoutCategoryList){
+        var productList = new ArrayList<ProductDTO>();
+        for (var product: productWithoutCategoryList) {
+            var categories = categoryService.getCategoriesByNames(product.getCategories());
+            productList.add(new ProductDTO(product.getId(), product.getName(), categories, product.getPrice(), product.getDescription(), product.getPhotos()));
+        }
+        return productList;
+    }
+
 
     public List<ProductDTO> findByText(String text) {
         TextCriteria criteria = TextCriteria.forDefaultLanguage().matchingAny(text);
@@ -158,4 +186,13 @@ public class ProductService {
         return productDTOS;
     }
 
+
+    public ProductDTO getProductById(String productId) {
+        var postgresProd = this.postgresProductRepository.findById(productId);
+        var mongoProd = this.mongoProductRepository.findById(productId);
+        if (postgresProd.isPresent() && mongoProd.isPresent()){
+            return new ProductDTO(postgresProd.get(), mongoProd.get());
+        }
+        return null;
+    }
 }

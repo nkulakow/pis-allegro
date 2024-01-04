@@ -4,9 +4,7 @@ import com.allegro.DTO.ProductDTO;
 import com.allegro.Service.CategoryService;
 import com.allegro.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
@@ -64,9 +62,10 @@ public class PageNavigator {
         return modelAndView;
     }
 
-    @RequestMapping("/product-info")
-    public ModelAndView getProductInfoPage() {
+    @RequestMapping("/product-info/{productId}")
+    public ModelAndView getProductInfoPage(@PathVariable String productId) {
         ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("productId", productId);
         modelAndView.setViewName("product-info.html");
         return modelAndView;
     }

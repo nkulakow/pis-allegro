@@ -3,20 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <title>View all products</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 </head>
 <body>
     <h2>View all products</h2>
-    <div>
-        <label for="categoriesField">Select categories</label>
-        <select name="categories" id="categoriesField" multiple>
-            <option value="option1">Category 1</option>
-            <option value="option2">Category 2</option>
-            <option value="option3">Category 3</option>
-        </select>
+    <div id="products">
+        <h2>Products:</h2>
+
     </div>
-    <div>
-      <h2>Products:</h2>
-      <p>Bly bly bly</p>
-    </div>
+
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                type: "GET",
+                url: "/products/get-all",
+                success: function (data) {
+                    console.log(data);
+                    displayResult(data);
+                }
+            });
+        });
+
+        function displayResult(data) {
+            let resultDiv = $("#products");
+
+            for (let j = 0; j < data.length; j++) {
+                resultDiv.append("<h2>" + "Product " + data[j].name + "</h2>");
+                resultDiv.append("<p>" + "Price: " + data[j].price + "</p>");
+                resultDiv.append("<p>" + "Description: " + data[j].description + "</p>");
+
+                let link = $('<a>').text("View details").attr('href', '/product-info/' + data[j].id);
+                resultDiv.append(link);
+            }
+        }
+    </script>
 </body>
 </html>

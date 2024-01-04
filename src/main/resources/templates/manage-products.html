@@ -1,87 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>Your first Spring application</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Add product</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+    <style>
+        .custom-select {
+            width: 200px; /* Set the desired width */
+        }
+    </style>
 </head>
 <body>
-    <div>
-        <h2>Add a new product</h2>
-        <div>
-            <label for="nameField">Name</label>
-            <input name="name" id="nameField">
-        </div>
-        <div>
-            <label for="categories">Categories</label>
-            <input name="categories" id="categories">
-        </div>
-        <div>
-            <label for="priceField">Price</label>
-            <input name="priceField" id="priceField">
-        </div>
-        <div>
-            <label for="description">Description</label>
-            <input name="description" id="description">
-        </div>
-        <div>
-            <label for="photo">Photo (not obligatory):</label>
-            <input type="file" id="photo" name="photo" accept="image/*">
-        </div>
-        <div>
-            <button onclick="submitForm()">Send!</button>
-        </div>
-    </div>
-    <div id="responseMessage"></div>
-    <script>
-        function submitForm() {
-            let productName = $("#nameField").val();
-            let productCategories = $("#categories").val();
-            let productPrice = $("#priceField").val();
-            let productDescription = $("#description").val();
-
-            // Create FormData object to handle file input
-            let formData = new FormData();
-            formData.append('productName', productName);
-            formData.append('productCategories', productCategories);
-            formData.append('productPrice', productPrice);
-            formData.append('productDescription', productDescription);
-
-            // Append the file to the FormData object
-            let productPhoto = $("#photo")[0].files[0];
-            formData.append('productPhoto', productPhoto);
+<div>
+    <h2>Add a new product</h2>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <label for="name">Enter name:</label>
+        <input type="text" name="name" id="name">
+        <br>
+        <label for="categories">Select categories:</label>
+        <select name="categories" id="categories" class="custom-select" multiple>
+        </select>
+        <br>
+        <label for="price">Enter price:</label>
+        <input type="number" step="0.01" name="price" id="price">
+        <br>
+        <label for="description">Enter description:</label>
+        <input type="text" name="description" id="description">
+        <br>
+        <label for="photo">Select product photo:</label>
+        <input type="file" name="photo" id="photo" accept="image/*">
+        <br>
+        <button type="submit">Upload</button>
+    </form>
+</div>
+<div id="responseMessage"></div>
+<script>
+    $(document).ready(function() {
+        $.ajax({
+            url: '/products/get-categories',
+            type: 'GET',
+            dataType: 'json',
+            success: function(categoryNames) {
+                var select = $('#categories');
+                $.each(categoryNames, function(index, categoryNames) {
+                    var option = $('<option>').val(categoryNames).text(categoryNames);
+                    select.append(option);
+                });
+            },
+            error: function() {
+                console.error('Failed to fetch categories.');
+            }
+        });
+        $('#uploadForm').submit(function(event) {
+            event.preventDefault();
+            var formData = new FormData($(this)[0]);
 
             $.ajax({
-                type: "POST",
-                url: "/products/add",
+                url: '/products/add',
+                type: 'POST',
                 data: formData,
-                processData: false,  // Prevent jQuery from processing the data
-                contentType: false,  // Set content type to false as FormData will handle it
-                success: function (response) {
-                    displayResult(response);
+                async: false,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    console.log("OK");
+                    var resultDiv = $("#responseMessage");
+                    resultDiv.empty();
+                    resultDiv.append("<p>" + response + "</p>");
                 }
             });
-        }
+        });
+        $('#categories').select2();
+    });
+</script>
 
-        function displayResult(response) {
-            let resultDiv = $("#responseMessage");
-            resultDiv.empty();
-            resultDiv.append("<p>" + response + "</p>");
-        }
-    </script>
-
-    <div>
-        <h2>Your products</h2>
-        <ul>
-            <li>
-                Product 1
-                <button>Edit</button>
-            </li>
-            <li>
-                Product 2
-                <button>Edit</button>
-            </li>
-        </ul>
-    </div>
+<div>
+    <h2>Your products</h2>
+    <ul>
+        <li>
+            Product 1
+            <button>Edit</button>
+        </li>
+        <li>
+            Product 2
+            <button>Edit</button>
+        </li>
+    </ul>
+</div>
 </body>
 </html>
