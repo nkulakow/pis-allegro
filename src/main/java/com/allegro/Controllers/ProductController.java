@@ -73,9 +73,4 @@ public class ProductController {
     public ProductWithoutCategoryDTO getProductInfo(@RequestParam String productId) {
         return new ProductWithoutCategoryDTO(this.productService.getProductById(productId));
     }
-
-    @GetMapping("/get-product-info")
-    public ProductWithoutCategoryDTO getProductInfo(@RequestParam String productId) {
-        return new ProductWithoutCategoryDTO(this.productService.getProductById(productId));
-    }
 }
