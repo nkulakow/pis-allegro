@@ -22,7 +22,7 @@ public class PageNavigator {
 //        this.categoryService = categoryService;
     }
 
-    @RequestMapping("/login")
+    @RequestMapping("/")
     public ModelAndView getLoginPage(){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("login.html");

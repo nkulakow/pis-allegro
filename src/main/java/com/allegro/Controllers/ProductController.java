@@ -41,11 +41,11 @@ public class ProductController {
 
     @PostMapping("/add")
     public String AddProduct(
-            @RequestParam String productName,
-            @RequestParam List<String> productCategories,
-            @RequestParam int productPrice,
-            @RequestParam String productDescription,
-            @RequestPart(value = "file", required = false) MultipartFile productPhoto, HttpSession session) {
+            @RequestParam("name") String productName,
+            @RequestParam("categories") List<String> categoriesNames,
+            @RequestParam("price") float productPrice,
+            @RequestParam("description") String productDescription,
+            @RequestParam(value = "photo", required = false) MultipartFile productPhoto, HttpSession session) {
         // @TODO: logged in user
         String login = (String)session.getAttribute("login");
         if(login == null){
@@ -55,11 +55,11 @@ public class ProductController {
         var quantity = 2;
         try {
             this.productService.addProduct(
-                    new User(),
+                    user,
                     productName,
                     this.categoryService.getCategoriesByNames(categoriesNames),
                     productPrice,
-                    1,
+                    quantity,
                     productDescription,
                     productPhoto);
             return "Successfully added a new product: ".concat(productName);
