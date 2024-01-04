@@ -109,7 +109,7 @@ public class ProductService {
         var productList = new ArrayList<ProductDTO>();
         for (var product: productWithoutCategoryList) {
             var categories = categoryService.getCategoriesByNames(product.getCategories());
-            productList.add(new ProductDTO(product.getId(), product.getName(), categories, product.getPrice(), product.getDescription(), product.getPhotos()));
+            productList.add(new ProductDTO(product.getUser(), product.getId(), product.getName(), categories, product.getPrice(), product.getQuantity(), product.getDescription(), product.getPhotos()));
         }
         return productList;
     }

@@ -1,6 +1,7 @@
 package com.allegro.DTO;
 
 import com.allegro.Entity.Category;
+import com.allegro.Entity.User;
 import lombok.Getter;
 import lombok.Setter;
 import org.bson.types.Binary;
@@ -24,6 +25,11 @@ public class ProductWithoutCategoryDTO {
     @Getter
     @Setter
     private float price;
+
+    @Getter
+    @Setter
+    private int quantity;
+
     @Getter
     @Setter
     private String description;
@@ -36,6 +42,10 @@ public class ProductWithoutCategoryDTO {
     @Getter
     @Setter
     private List<String> base64EncodedPhotos;
+
+    @Getter
+    @Setter
+    private User user;
 
     public ProductWithoutCategoryDTO() {
     }

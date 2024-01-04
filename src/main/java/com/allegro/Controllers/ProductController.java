@@ -3,6 +3,7 @@ package com.allegro.Controllers;
 import com.allegro.DTO.ProductDTO;
 import com.allegro.DTO.ProductWithoutCategoryDTO;
 import com.allegro.Entity.Category;
+import com.allegro.Entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,9 +48,11 @@ public class ProductController {
 //        System.out.println(productPhoto.getSize());
         try {
             this.productService.addProduct(
+                    new User(),
                     productName,
                     this.categoryService.getCategoriesByNames(categoriesNames),
                     productPrice,
+                    1,
                     productDescription,
                     productPhoto);
             return "Successfully added a new product: ".concat(productName);
@@ -72,5 +75,16 @@ public class ProductController {
     @GetMapping("/get-product-info")
     public ProductWithoutCategoryDTO getProductInfo(@RequestParam String productId) {
         return new ProductWithoutCategoryDTO(this.productService.getProductById(productId));
+    }
+
+    @GetMapping("/add-some-categories")
+    public void insertCategories() {
+        this.categoryService.addCategory("food");
+        this.categoryService.addCategory("cloth");
+        this.categoryService.addCategory("sports");
+        this.categoryService.addCategory("game");
+        this.categoryService.addCategory("electronic");
+        this.categoryService.addCategory("film");
+        this.categoryService.addCategory("book");
     }
 }
