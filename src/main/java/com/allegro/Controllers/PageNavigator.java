@@ -6,6 +6,8 @@ import com.allegro.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/")
@@ -20,7 +22,21 @@ public class PageNavigator {
 //        this.categoryService = categoryService;
     }
 
-    @RequestMapping("/")
+    @RequestMapping("/login")
+    public ModelAndView getLoginPage(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("login.html");
+        return modelAndView;
+    }
+
+    @RequestMapping("/register")
+    public ModelAndView getRegisterPage(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("register.html");
+        return modelAndView;
+    }
+
+    @RequestMapping("/mainPage")
     public ModelAndView getMainPage(){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("main-page.html");

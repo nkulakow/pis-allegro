@@ -7,6 +7,7 @@ import org.hibernate.annotations.GenericGenerator;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @Entity
@@ -44,12 +45,12 @@ public class User {
     private String surname;
 
     @Getter
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<PostgresProduct> soldProducts;
 
 
     @Getter
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<CartItem> cartItems;
 
 
@@ -87,12 +88,26 @@ public class User {
             this.soldProducts = List.of(product);
         else
             this.soldProducts.add(product);
+        product.setUser(this);
     }
     public void addCartItem(CartItem cartItem){
         if (this.cartItems == null)
             this.cartItems = List.of(cartItem);
         else
             this.cartItems.add(cartItem);
+        cartItem.setUser(this);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        User otherUser = (User) obj;
+        return this.getId().equals((otherUser.getId())) && this.getEmail().equals((otherUser.getEmail()));
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id, this.email);
+    }
 }
+

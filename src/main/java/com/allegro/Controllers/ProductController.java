@@ -4,6 +4,8 @@ import com.allegro.DTO.ProductDTO;
 import com.allegro.DTO.ProductWithoutCategoryDTO;
 import com.allegro.Entity.Category;
 import com.allegro.Entity.User;
+import com.allegro.Service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +24,13 @@ public class ProductController {
     ProductService productService;
     CategoryService categoryService;
 
+    UserService userService;
+
     @Autowired
-    public ProductController(ProductService productService, CategoryService categoryService){
+    public ProductController(ProductService productService, CategoryService categoryService, UserService userService){
         this.productService = productService;
         this.categoryService = categoryService;
+        this.userService = userService;
     }
 
     @PostMapping("/fulltext-search-results")
@@ -36,16 +41,18 @@ public class ProductController {
 
     @PostMapping("/add")
     public String AddProduct(
-            @RequestParam("name") String productName,
-            @RequestParam("categories") List<String> categoriesNames,
-            @RequestParam("price") float productPrice,
-            @RequestParam("description") String productDescription,
-            @RequestParam(value = "photo", required = false) MultipartFile productPhoto) {
-//        System.out.println(productName);
-//        System.out.println(productCategories);
-//        System.out.println(productPrice);
-//        System.out.println(productDescription);
-//        System.out.println(productPhoto.getSize());
+            @RequestParam String productName,
+            @RequestParam List<String> productCategories,
+            @RequestParam int productPrice,
+            @RequestParam String productDescription,
+            @RequestPart(value = "file", required = false) MultipartFile productPhoto, HttpSession session) {
+        // @TODO: logged in user
+        String login = (String)session.getAttribute("login");
+        if(login == null){
+            return "You must login in order to add a product";
+        }
+        var user = this.userService.getUserByEmail(login);
+        var quantity = 2;
         try {
             this.productService.addProduct(
                     new User(),

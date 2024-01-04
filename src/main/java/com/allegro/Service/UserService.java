@@ -6,6 +6,7 @@ import com.allegro.Entity.User;
 import com.allegro.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.LinkedList;
 
 import java.util.List;
 
@@ -40,6 +41,7 @@ public class UserService{
         if(user == null){
             return false;
         }
-        return user.getPasswordHash().equals(password);
+        User toCompare = new User(email, password, "toCompare", "toCompare", new LinkedList<PostgresProduct>(), new LinkedList<CartItem>());
+        return user.getPasswordHash().equals(toCompare.getPasswordHash());
     }
 }
