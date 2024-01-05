@@ -2,10 +2,12 @@ package com.allegro.Controllers;
 
 import com.allegro.DTO.ProductDTO;
 import com.allegro.DTO.ProductWithoutCategoryDTO;
+import com.allegro.Entity.CartItem;
 import com.allegro.Entity.Category;
 import com.allegro.Entity.User;
 import com.allegro.Service.UserService;
 import jakarta.servlet.http.HttpSession;
+import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +46,7 @@ public class ProductController {
             @RequestParam("name") String productName,
             @RequestParam("categories") List<String> categoriesNames,
             @RequestParam("price") float productPrice,
+            @RequestParam("quantity") int quantity,
             @RequestParam("description") String productDescription,
             @RequestParam(value = "photo", required = false) MultipartFile productPhoto, HttpSession session) {
         // @TODO: logged in user
@@ -52,7 +55,6 @@ public class ProductController {
             return "You must login in order to add a product";
         }
         var user = this.userService.getUserByEmail(login);
-        var quantity = 2;
         try {
             this.productService.addProduct(
                     user,
@@ -73,11 +75,11 @@ public class ProductController {
         return categoryService.getAllCategoryNames();
     }
 
-    @GetMapping("/get-all")
-    public List<ProductWithoutCategoryDTO> getData() {
-        var products = this.productService.getProducts();
-        return this.productService.getProductsWithoutCategory(products);
-    }
+//    @GetMapping("/get-all")
+//    public List<ProductWithoutCategoryDTO> getData() {
+//        var products = this.productService.getProducts();
+//        return this.productService.getProductsWithoutCategory(products);
+//    }
 
     @GetMapping("/get-product-info")
     public ProductWithoutCategoryDTO getProductInfo(@RequestParam String productId) {
@@ -107,9 +109,65 @@ public class ProductController {
         return this.productService.getProductsWithoutCategory(products);
     }
 
-    @GetMapping("/get-products-in-categories")
-    public List<ProductWithoutCategoryDTO> getProductsInCategories() {
-        var products = this.productService.getProductByCategories(List.of("food", "book"));
+    @PostMapping("/get-all-in-categories")
+    public List<ProductWithoutCategoryDTO> getProductsInCategories(@RequestBody List<String> categories) {
+        var products = this.productService.getProductByCategories(categories);
         return this.productService.getProductsWithoutCategory(products);
     }
+
+    @PostMapping("/edit-product")
+    public String editProduct(
+            @RequestParam("name") String productName,
+            @RequestParam("categories") List<String> categoriesNames,
+            @RequestParam("price") float productPrice,
+            @RequestParam("description") String productDescription,
+            @RequestParam(value = "photo", required = false) MultipartFile productPhoto,
+            @RequestParam("id") String productId,
+            @RequestParam("quantity") int quantity) {
+        ProductDTO productDTO = this.productService.getProductById(productId);
+        productDTO.setName(productName);
+        productDTO.setCategories(this.categoryService.getCategoriesByNames(categoriesNames));
+        productDTO.setPrice(productPrice);
+        productDTO.setDescription(productDescription);
+        productDTO.setQuantity(quantity);
+        if (productPhoto != null) {
+            try {
+                productDTO.setPhotos(List.of(new Binary(productPhoto.getBytes())));
+            } catch (IOException e) {
+                return "Could not edit a product: ".concat(productName);
+            }
+        }
+        this.productService.updateProduct(productDTO);
+        return "Successfully edited a product: ".concat(productName);
+    }
+
+    @PostMapping("/add-to-cart")
+    public String addToCart(@RequestParam String productId, HttpSession session) {
+        String login = (String)session.getAttribute("login");
+        if(login == null){
+            return "You must login in order to add a product to cart";
+        }
+        var user = this.userService.getUserByEmail(login);
+        var product = this.productService.getProductById(productId);
+        var cartItem = new CartItem(user, product.getPostgres(), 1);
+        this.userService.addCartItem(user, cartItem);
+        return "Successfully added a product to cart";
+    }
+
+    @RequestMapping("/get-cart-items")
+    public List<ProductWithoutCategoryDTO> getCartItems(HttpSession session) {
+        String login = (String)session.getAttribute("login");
+        if(login == null){
+            return new ArrayList<>();
+        }
+        var user = this.userService.getUserByEmail(login);
+        var cartItems = user.getCartItems();
+        var products = new ArrayList<ProductDTO>();
+        for (var cartItem: cartItems) {
+            var product = this.productService.getProductById(cartItem.getProduct().getId());
+            products.add(product);
+        }
+        return this.productService.getProductsWithoutCategory(products);
+    }
+
 }

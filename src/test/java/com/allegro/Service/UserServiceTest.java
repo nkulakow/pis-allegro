@@ -1,6 +1,8 @@
 package com.allegro.Service;
 
 import com.allegro.Entity.User;
+import com.allegro.Repository.CartItemRepository;
+import com.allegro.Repository.PostgresProductRepository;
 import com.allegro.Repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,13 +22,21 @@ public class UserServiceTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private CartItemRepository cartItemRepository;
+
+    @Mock
+    private PostgresProductRepository productRepository;
+
     @InjectMocks
     private UserService userService;
 
     @BeforeEach
     void SetUp(){
         userRepository = mock(UserRepository.class);
-        userService = new UserService(userRepository);
+        cartItemRepository = mock(CartItemRepository.class);
+        productRepository = mock(PostgresProductRepository.class);
+        userService = new UserService(userRepository, cartItemRepository, productRepository);
     }
 
     @Test

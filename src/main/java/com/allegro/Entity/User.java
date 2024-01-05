@@ -50,7 +50,7 @@ public class User {
     private List<PostgresProduct> soldProducts;
 
     @Getter
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<CartItem> cartItems;
 
 

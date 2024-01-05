@@ -11,6 +11,16 @@
         .custom-select {
             width: 200px; /* Set the desired width */
         }
+        .product-container {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .edit-container {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -26,6 +36,9 @@
         <br>
         <label for="price">Enter price:</label>
         <input type="number" step="0.01" name="price" id="price">
+        <br>
+        <label for="quantity">Enter quantity:</label>
+        <input type="number" step="1" name="quantity" id="quantity">
         <br>
         <label for="description">Enter description:</label>
         <input type="text" name="description" id="description">
@@ -75,21 +88,172 @@
             });
         });
         $('#categories').select2();
+        getUserProducts();
+
+        function renderProductDetails(product) {
+            var productContainer = $("<div>").addClass("product-container");
+
+            // Display product details
+            productContainer.append("<h3>" + "Product " + product.name + "</h3>");
+            productContainer.append("<p class='product-details'>" + "ID: " + product.id + "</p>");
+            productContainer.append("<p class='product-details'>" + "Price: " + product.price + "</p>");
+            productContainer.append("<p class='product-details'>" + "Description: " + product.description + "</p>");
+
+            // Add an "Edit" button
+            var editButton = $("<button>").text("Edit");
+            editButton.click(function () {
+                showEditForm(productContainer, product);
+            });
+            productContainer.append(editButton);
+            productContainer.append("<br>");
+
+            return productContainer;
+        }
+
+        function getUserProducts() {
+            $.ajax({
+                url: '/products/get-user-products',
+                type: 'GET',
+                dataType: 'json',
+                success: function (userProducts) {
+                    var productsList = $("#userProducts");
+                    productsList.empty();
+
+                    $.each(userProducts, function (index, product) {
+                        renderProductDetails(product).appendTo(productsList);
+                    });
+                },
+                error: function () {
+                    console.error('Failed to fetch user products.');
+                }
+            });
+        }
+
+        var allCategories;
+
+        $.ajax({
+            url: '/products/get-categories',
+            type: 'GET',
+            dataType: 'json',
+            success: function(categoryNames) {
+                allCategories = categoryNames;
+
+                // Fetch and display user's products
+                getUserProducts();
+            },
+            error: function() {
+                console.error('Failed to fetch categories.');
+            }
+        });
+
+        var currentlyEditingProduct;
+
+
+        function showEditForm(container, product) {
+            if (currentlyEditingProduct) {
+                currentlyEditingProduct.find(".product-details").show();
+                currentlyEditingProduct.find("button").show();
+                currentlyEditingProduct.find(".edit-container").remove();
+            }
+
+            container.find(".product-details").hide();
+            container.find("button").hide();
+
+            // Create an editable form container
+            var editContainer = $("<div>").addClass("edit-container");
+
+            // Add editable fields with default values
+            var nameInput = $("<input>").attr("type", "text").val(product.name);
+            var priceInput = $("<input>").attr("type", "number").attr("step", "0.01").val(product.price);
+            var descriptionInput = $("<input>").attr("type", "text").val(product.description);
+            var categoriesInput = $("<select style='width: 200px'>").attr("id", "editCategories").addClass("custom-select").attr("multiple", "multiple");
+            $.each(product.categories, function (index, category) {
+                categoriesInput.append($("<option>").val(category).text(category).prop("selected", true));
+            });
+
+            $.each(allCategories, function (index, category) {
+                if (product.categories.includes(category)) {
+                    return;
+                }
+                categoriesInput.append($("<option>").val(category).text(category));
+            });
+
+            // Quantity input
+            var quantityInput = $("<input>").attr("type", "number").val(product.quantity);
+
+            // Photo input
+            var photoInput = $("<input>").attr("type", "file").attr("id", "editPhoto").attr("name", "editPhoto");
+
+
+            // Add a button to update the product
+            var updateButton = $("<button>").text("Update");
+            updateButton.click(function () {
+                // Call your update function here
+                updateProduct(product.id, nameInput.val(), priceInput.val(), descriptionInput.val(), categoriesInput.val(), quantityInput.val(), photoInput.prop('files')[0]);
+            });
+
+            var cancelButton = $("<button>").text("Cancel");
+            cancelButton.click(function () {
+                container.find(".product-details").show();
+                container.find("button").show();
+                container.find(".edit-container").remove();
+                currentlyEditingProduct = null;
+            });
+
+            // Append inputs and button to the edit container
+            editContainer.append("<label for='nameInput'>Name:</label>").append(nameInput).append("<br>");
+            editContainer.append("<label for='priceInput'>Price:</label>").append(priceInput).append("<br>");
+            editContainer.append("<label for='descriptionInput'>Description:</label>").append(descriptionInput).append("<br>");
+            editContainer.append("<label for='categoriesInput'>Categories:</label>").append(categoriesInput).append("<br>");
+            editContainer.append("<label for='quantityInput'>Quantity:</label>").append(quantityInput).append("<br>");
+            editContainer.append("<label for='photoInput'>New photo:</label>").append(photoInput).append("Warning: old photo will be lost").append("<br>");
+            editContainer.append(updateButton);
+            editContainer.append(cancelButton)
+            categoriesInput.select2();
+            currentlyEditingProduct = container;
+
+            // Append the edit container to the list
+            container.append(editContainer);
+        }
+
+        function updateProduct(productId, newName, newPrice, newDescription, newCategories, newQuantity, newPhoto) {
+            // Call your update function here
+            var formData = new FormData();
+            formData.append("id", productId);
+            formData.append("name", newName);
+            formData.append("price", newPrice);
+            formData.append("description", newDescription);
+            formData.append("categories", newCategories);
+            formData.append("quantity", newQuantity);
+            if (newPhoto) {
+                formData.append("photo", newPhoto);
+            }
+
+
+            $.ajax({
+                url: '/products/edit-product',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    console.log("Product updated successfully:", response);
+                    var confirmationMessage = $("<p>").text("Updated product with ID: " + productId);
+                    $("#responseMessageUpdate").empty().append(confirmationMessage);
+                },
+                error: function () {
+                    console.error('Failed to update product.');
+                }
+            });
+        }
     });
 </script>
 
 <div>
     <h2>Your products</h2>
-    <ul>
-        <li>
-            Product 1
-            <button>Edit</button>
-        </li>
-        <li>
-            Product 2
-            <button>Edit</button>
-        </li>
-    </ul>
+    <div id="responseMessageUpdate"></div>
+    <div id="userProducts">
+    </div>
 </div>
 </body>
 </html>

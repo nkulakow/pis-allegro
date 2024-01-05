@@ -64,4 +64,12 @@ public class UserController {
         this.userService.addUser(newUser);
         return new ModelAndView("login");
     }
+
+    @PostMapping("/buy-cart-items")
+    public String buyCartItems(HttpSession session) {
+        String login = (String)session.getAttribute("login");
+        var user = this.userService.getUserByEmail(login);
+        this.userService.buyCartItems(user);
+        return "Successfully bought products";
+    }
 }

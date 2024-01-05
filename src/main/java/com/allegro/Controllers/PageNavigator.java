@@ -13,14 +13,8 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/")
 public class PageNavigator {
 
-//    ProductService productService;
-//    CategoryService categoryService;
 
-    @Autowired
-    public PageNavigator(ProductService productService, CategoryService categoryService){
-//        this.productService = productService;
-//        this.categoryService = categoryService;
-    }
+    public PageNavigator(){}
 
     @RequestMapping("/")
     public ModelAndView getLoginPage(){
@@ -86,10 +80,4 @@ public class PageNavigator {
         return modelAndView;
     }
 
-//    @RequestMapping("/add-category")
-//    public ModelAndView getAddCategoryPage(){
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.setViewName("add-category.html");
-//        return modelAndView;
-//    }
 }
