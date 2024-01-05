@@ -95,7 +95,7 @@
 
             // Display product details
             productContainer.append("<h3>" + "Product " + product.name + "</h3>");
-            productContainer.append("<p class='product-details'>" + "ID: " + product.id + "</p>");
+            // productContainer.append("<p class='product-details'>" + "ID: " + product.id + "</p>");
             productContainer.append("<p class='product-details'>" + "Price: " + product.price + "</p>");
             productContainer.append("<p class='product-details'>" + "Description: " + product.description + "</p>");
 
@@ -167,6 +167,12 @@
             var priceInput = $("<input>").attr("type", "number").attr("step", "0.01").val(product.price);
             var descriptionInput = $("<input>").attr("type", "text").val(product.description);
             var categoriesInput = $("<select style='width: 200px'>").attr("id", "editCategories").addClass("custom-select").attr("multiple", "multiple");
+            var photosDiv = $("<div>")
+            if (product.base64EncodedPhotos && product.base64EncodedPhotos.length > 0) {
+                for (let i = 0; i < product.base64EncodedPhotos.length; i++) {
+                    photosDiv.append(`<img src="data:image/png;base64,${product.base64EncodedPhotos[i]}" alt="Product Image" style="max-width: 500px; max-height: 500px;"> `);
+                }
+            }
             $.each(product.categories, function (index, category) {
                 categoriesInput.append($("<option>").val(category).text(category).prop("selected", true));
             });
@@ -206,6 +212,7 @@
             editContainer.append("<label for='descriptionInput'>Description:</label>").append(descriptionInput).append("<br>");
             editContainer.append("<label for='categoriesInput'>Categories:</label>").append(categoriesInput).append("<br>");
             editContainer.append("<label for='quantityInput'>Quantity:</label>").append(quantityInput).append("<br>");
+            editContainer.append("<label for='photosDiv'>Photos:</label>").append(photosDiv);
             editContainer.append("<label for='photoInput'>New photo:</label>").append(photoInput).append("Warning: old photo will be lost").append("<br>");
             editContainer.append(updateButton);
             editContainer.append(cancelButton)
@@ -240,6 +247,7 @@
                     console.log("Product updated successfully:", response);
                     var confirmationMessage = $("<p>").text("Updated product with ID: " + productId);
                     $("#responseMessageUpdate").empty().append(confirmationMessage);
+                    getUserProducts()
                 },
                 error: function () {
                     console.error('Failed to update product.');

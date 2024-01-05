@@ -75,11 +75,11 @@ public class ProductController {
         return categoryService.getAllCategoryNames();
     }
 
-//    @GetMapping("/get-all")
-//    public List<ProductWithoutCategoryDTO> getData() {
-//        var products = this.productService.getProducts();
-//        return this.productService.getProductsWithoutCategory(products);
-//    }
+    @GetMapping("/get-all")
+    public List<ProductWithoutCategoryDTO> getData() {
+        var products = this.productService.getProducts();
+        return this.productService.getProductsWithoutCategory(products);
+    }
 
     @GetMapping("/get-product-info")
     public ProductWithoutCategoryDTO getProductInfo(@RequestParam String productId) {
