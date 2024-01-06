@@ -23,4 +23,7 @@ java -jar target/allegro-0.0.1-SNAPSHOT.jar
 ```
 lub odpowiednio "wyklikując" obie komendy   
 
-
+## Model bazy danych
+PostgreSQL:   
+![postgres](images/postgres.png)
+MongoDB:
