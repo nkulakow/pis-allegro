@@ -32,13 +32,10 @@ public class ProductService {
     private final PostgresProductRepository postgresProductRepository;
 
 
-    private final CategoryService categoryService;
-
     @Autowired
-    ProductService(MongoProductRepository mongoProductRepository, PostgresProductRepository repository, CategoryService categoryService){
+    public ProductService(MongoProductRepository mongoProductRepository, PostgresProductRepository repository){
         this.mongoProductRepository = mongoProductRepository;
         this.postgresProductRepository  = repository;
-        this.categoryService = categoryService;
     }
 
     @Transactional
@@ -62,18 +59,8 @@ public class ProductService {
         postgresProductRepository.save(productDTO.getPostgres());
     }
 
-    @Transactional
-    public void saveProduct(ProductDTO productDTO){
-        mongoProductRepository.save(productDTO.getMongo());
-        postgresProductRepository.save(productDTO.getPostgres());
-    }
-
     public List<MongoProduct> getMongoProducts(){
         return mongoProductRepository.findAll();
-    }
-
-    public List<PostgresProduct> getPostgresProducts (){
-        return this.postgresProductRepository.findAll();
     }
 
     public ArrayList<ProductDTO> getProducts () {
@@ -87,9 +74,7 @@ public class ProductService {
                 MongoProduct mongoProd = mProdFound.get();
                 productList.add(new ProductDTO(postProd, mongoProd));
             }
-            else {
-//                @TODO throw or sth else
-            }
+
         }
         return productList;
     }
@@ -102,14 +87,6 @@ public class ProductService {
         return productWithoutCategoryList;
     }
 
-    public ArrayList<ProductDTO> getProductsWithCategory(ArrayList<ProductWithoutCategoryDTO> productWithoutCategoryList){
-        var productList = new ArrayList<ProductDTO>();
-        for (var product: productWithoutCategoryList) {
-            var categories = categoryService.getCategoriesByNames(product.getCategories());
-            productList.add(new ProductDTO(product.getUser(), product.getId(), product.getName(), categories, product.getPrice(), product.getQuantity(), product.getDescription(), product.getPhotos()));
-        }
-        return productList;
-    }
 
 
     public List<ProductDTO> findByText(String text) {
@@ -153,9 +130,7 @@ public class ProductService {
         if (mongoProduct.isPresent()){
             return new ProductDTO(postgresProduct, mongoProduct.get());
         }
-        else {
-            //@TODO throw or sth else
-        }
+
         return null;
     }
 
@@ -172,9 +147,7 @@ public class ProductService {
         if (mongoProduct.isPresent()){
             return new ProductDTO(cartItem.getProduct(), mongoProduct.get());
         }
-        else {
-            //@TODO throw or sth else
-        }
+
         return null;
     }
 

@@ -1,5 +1,7 @@
 package com.allegro.Service;
 
+import com.allegro.Entity.CartItem;
+import com.allegro.Entity.PostgresProduct;
 import com.allegro.Entity.User;
 import com.allegro.Repository.CartItemRepository;
 import com.allegro.Repository.PostgresProductRepository;
@@ -107,6 +109,53 @@ public class UserServiceTest {
         assertTrue(validResult);
         var invalidResult = userService.login(email1, "def");
         assertFalse(invalidResult);
+    }
+
+    @Test
+    void noUserLoginTest() {
+        String email1 = "abc@gmail.com";
+
+        when(userRepository.findByEmail(email1)).thenReturn(null);
+
+        var invalidResult = userService.login(email1, "def");
+        assertFalse(invalidResult);
+    }
+
+    @Test
+    void addCartItemTest() {
+        User user = new User("test@example.com", "John", "Doe", "password", null, null);
+        CartItem cartItem = new CartItem(user, new PostgresProduct(), 2);
+
+        when(cartItemRepository.save(any(CartItem.class))).thenReturn(cartItem);
+        when(userRepository.save(any(User.class))).thenReturn(user);
+
+        userService.addCartItem(user, cartItem);
+
+        verify(userRepository, times(1)).save(user);
+        verify(cartItemRepository, times(1)).save(cartItem);
+
+        assertTrue(user.getCartItems().contains(cartItem));
+    }
+
+    @Test
+    void buyCartItemsTest() {
+        User user = new User("test@example.com", "John", "Doe", "password", null, null);
+        PostgresProduct product = new PostgresProduct();
+        CartItem cartItem = new CartItem(user, product, 2);
+        user.addCartItem(cartItem);
+
+        doNothing().when(cartItemRepository).delete(cartItem);
+        when(productRepository.save(any(PostgresProduct.class))).thenReturn(product);
+        when(userRepository.save(any(User.class))).thenReturn(user);
+
+        userService.buyCartItems(user);
+
+
+        verify(cartItemRepository, times(1)).delete(cartItem);
+        verify(productRepository, times(1)).save(product);
+        verify(userRepository, times(1)).save(user);
+
+        assertFalse(user.getCartItems().contains(cartItem));
     }
 
 }

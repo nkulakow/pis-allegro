@@ -1,6 +1,5 @@
 package com.allegro.Repository;
 
-import com.allegro.Entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.allegro.Entity.PostgresProduct;
 import org.springframework.data.jpa.repository.Query;

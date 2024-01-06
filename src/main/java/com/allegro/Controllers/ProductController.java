@@ -3,18 +3,14 @@ package com.allegro.Controllers;
 import com.allegro.DTO.ProductDTO;
 import com.allegro.DTO.ProductWithoutCategoryDTO;
 import com.allegro.Entity.CartItem;
-import com.allegro.Entity.Category;
-import com.allegro.Entity.User;
 import com.allegro.Service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.allegro.Service.CategoryService;
 import com.allegro.Service.ProductService;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -73,12 +69,6 @@ public class ProductController {
     @GetMapping("/get-categories")
     public List<String> getCategories() {
         return categoryService.getAllCategoryNames();
-    }
-
-    @GetMapping("/get-all")
-    public List<ProductWithoutCategoryDTO> getData() {
-        var products = this.productService.getProducts();
-        return this.productService.getProductsWithoutCategory(products);
     }
 
     @GetMapping("/get-product-info")

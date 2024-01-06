@@ -40,10 +40,6 @@ public class ProductWithoutCategoryDTO {
     private List<Binary> photos;
 
 
-    @Getter
-    @Setter
-    private User user;
-
     public ProductWithoutCategoryDTO() {
     }
 

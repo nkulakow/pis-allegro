@@ -1,7 +1,6 @@
 package com.allegro.configuration;
 
 import com.mongodb.client.MongoClient;
-import org.mockito.Mockito;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;

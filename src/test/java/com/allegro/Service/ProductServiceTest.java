@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -34,9 +33,6 @@ public class ProductServiceTest {
     @Mock
     private PostgresProductRepository postgresProductRepository;
 
-    @Mock
-    private CategoryService categoryService;
-
     @InjectMocks
     private ProductService productService;
 
@@ -44,7 +40,7 @@ public class ProductServiceTest {
     void setUp() {
         postgresProductRepository = mock(PostgresProductRepository.class);
         mongoProductRepository = mock(MongoProductRepository.class);
-        productService = new ProductService(mongoProductRepository, postgresProductRepository, categoryService);
+        productService = new ProductService(mongoProductRepository, postgresProductRepository);
     }
 
 
@@ -147,7 +143,7 @@ public class ProductServiceTest {
         var user = new User("123@gmail.com", "password", "John", "Doe", null, null);
         PostgresProduct soldProduct = new PostgresProduct("123", "name", null, 1.F, 1, user);
         user.addSoldProduct(soldProduct);
-        MongoProduct mongoProduct = new MongoProduct("123", "description", null);;
+        MongoProduct mongoProduct = new MongoProduct("123", "description", null);
         when(mongoProductRepository.findById(any())).thenReturn(Optional.of(mongoProduct));
 
         List<ProductDTO> result = productService.getWholeSoldProductsByPostgres(user);
@@ -216,5 +212,6 @@ public class ProductServiceTest {
         List<ProductDTO> result = productService.getWholeCartItemsByPostgres(user);
         assertEquals(postProd, result.get(0).getPostgres());
         assertEquals(mongoProd, result.get(0).getMongo());
+        assertEquals(mongoProd.toString(), "description");
     }
 }
