@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Hello Page</title>
+  <style>
+    body {
+      background-color: #e0e0e0;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    .container {
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h2 th:text="'Hello! Added new product with name: (' + ${name} + ') and description: (' + ${des} + ')'"></h2>
+</div>
+<form action="/" method="GET" id="backForm">
+  <button>Go back</button>
+</form>
+</body>
+</html>

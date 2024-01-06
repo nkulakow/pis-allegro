@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+</head>
+<body>
+    <div id="responseMessage">
+    </div>
+
+    <script th:inline="javascript">
+        var productId = /*[[${productId}]]*/ null;
+    </script>
+
+    <script>
+
+        function addToCart(productId) {
+            console.log(productId);
+            $.ajax({
+                type: "POST",
+                url: "/products/add-to-cart",
+                data: { productId: productId },
+                success: function (response) {
+                    console.log(response);
+                    alert(response);
+                },
+                error: function () {
+                    console.error('Failed to add the product to the cart.');
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            $.ajax({
+                type: "GET",
+                url: "/products/get-product-info",
+                data: {productId: productId},
+                success: function (product) {
+                    displayResult(product);
+                }
+            });
+
+
+            function displayResult(product) {
+                let resultDiv = $("#responseMessage");
+                resultDiv.append("<h1>" + "Product " + product.name + "</h1>");
+                resultDiv.append("<p>" + "Price: " + product.price + "</p>");
+                resultDiv.append("<p>" + "Description: " + product.description + "</p>");
+
+                if (product.categories && product.categories.length > 0) {
+                    resultDiv.append("<h3>" + "Categories:" + "</h3>");
+                    for (let i = 0; i < product.categories.length; i++) {
+                        resultDiv.append("<p>" + product.categories[i] + "</p>");
+                    }
+                }
+
+                if (product.quantity < 1){
+                    resultDiv.append("<p>" + "Quantity: product not available" + "</p>");
+                }
+                else {
+                    resultDiv.append("<p>" + "Quantity: " + product.quantity + "</p>");
+                    resultDiv.append(`<button onclick="addToCart('${product.id}')">Add to cart</button>`);
+                    resultDiv.append("<br><br>");
+                }
+
+                if (product.base64EncodedPhotos && product.base64EncodedPhotos.length > 0) {
+                    for (let i = 0; i < product.base64EncodedPhotos.length; i++) {
+                        resultDiv.append(`<img src="data:image/png;base64,${product.base64EncodedPhotos[i]}" alt="Product Image" style="max-width: 500px; max-height: 500px;"> `);
+                    }
+                }
+            }
+        });
+    </script>
+    <h2>Comments</h2>
+</body>
+</html>

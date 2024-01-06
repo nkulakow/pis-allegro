@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Cart</title>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+<h2>Your cart</h2>
+<ul id="cartList">
+</ul>
+<button id="buyCartButton">Buy Cart Items</button>
+
+<script>
+  $(document).ready(function () {
+    getCartItems();
+
+    function getCartItems() {
+      $.ajax({
+        url: '/products/get-cart-items',
+        type: 'GET',
+        dataType: 'json',
+        success: function (cartItems) {
+          displayCartItems(cartItems);
+        },
+        error: function () {
+          console.error('Failed to fetch cart items.');
+        }
+      });
+    }
+
+    function displayCartItems(cartItems) {
+      var cartList = $("#cartList");
+      cartList.empty();
+
+      $.each(cartItems, function (index, cartItem) {
+        var listItem = $("<li>");
+        var link = $("<a>").attr("href", "product-info/" + cartItem.id).text(cartItem.name);
+        listItem.append(link);
+        cartList.append(listItem);
+      });
+    }
+
+    $("#buyCartButton").click(function () {
+      if (confirm("Are you sure you want to buy the cart items?")) {
+        $.ajax({
+          url: '/user/buy-cart-items',
+          type: 'POST',
+          success: function (response) {
+            alert(response);
+            displayCartItems([]);
+          },
+          error: function () {
+            console.error('Failed to buy cart items.');
+          }
+        });
+      }
+    });
+
+  });
+</script>
+</body>
+</html>

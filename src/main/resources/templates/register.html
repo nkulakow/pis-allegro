@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration Form</title>
+</head>
+<body>
+
+<h1>User Registration</h1>
+
+<!-- Formularz rejestracji -->
+<form id="registrationForm" action="/user/register" method="post">
+  <!-- Imię -->
+  <label for="name">First Name:</label>
+  <input type="text" id="name" name="name" required>
+
+  <!-- Nazwisko -->
+  <label for="surname">Last Name:</label>
+  <input type="text" id="surname" name="surname" required>
+
+  <!-- Email -->
+  <label for="email">Email:</label>
+  <input type="email" id="email" name="email" required>
+
+  <!-- Hasło -->
+  <label for="password">Password:</label>
+  <input type="password" id="password" name="password" required>
+
+  <!-- Przycisk rejestracji -->
+  <button type="submit">Register</button>
+</form>
+
+</body>
+</html>
