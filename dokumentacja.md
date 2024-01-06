@@ -52,6 +52,12 @@ Administrator może dodać raz wybrane kategorie z pomocą strony "adres-pierwsz
 #### Uwagi
 Do aplikacji może naraz zalogować się wiele użytkowników w różnych przeglądarkach, ponieważ informacja o tym, kto jest zalogowany (login) przechowywana jest w sesji.   
 
+### Testy
+#### Pokrycie
+![jacoco](images/jacoco.png)    
+Pominięto testowanie funkcji, których nie było sensu testować (@Getters, testy repozytoriów itd.).  
+CI zapewniona przez jenkinsa.   
+
 ## Raport z pracy
 ### Podział pracy
 - Architektura systemu (w tym zmiany w trakcie) - wszyscy
@@ -63,4 +69,6 @@ Do aplikacji może naraz zalogować się wiele użytkowników w różnych przegl
   - Marcin Wawrzyniak : interfejs graficzny, "implementacja architektury frontendu" (układ kontrolerów i html), Page Navigator, Product Controller
   - Mateusz Kiełbus : użytkownicy (po stronie backendu + user controller), mechanizm sesji
 
+## Commity
+![commits](images/commits.png)     
 
