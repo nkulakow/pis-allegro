@@ -3,13 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <title>Your Cart</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="styles.css">
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 <body>
-<h2>Your cart</h2>
-<ul id="cartList">
-</ul>
-<button id="buyCartButton">Buy Cart Items</button>
+<div class="container py-5">
+  <div class="row">
+    <h2 class="add-padding">Your cart</h2>
+    <ul id="cartList">
+    </ul>
+    <button class="btn btn-primary smaller-button" id="buyCartButton">Buy Cart Items</button>
+  </div>
+
+</div>
+
 
 <script>
   $(document).ready(function () {
