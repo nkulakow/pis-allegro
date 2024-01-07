@@ -3,33 +3,52 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <title>Registration Form</title>
 </head>
 <body>
 
 <h1>User Registration</h1>
 
-<!-- Formularz rejestracji -->
-<form id="registrationForm" action="/user/register" method="post">
-  <!-- Imię -->
-  <label for="name">First Name:</label>
-  <input type="text" id="name" name="name" required>
+<div class="row">
+  <div class="col-md-4">
+    <!-- Formularz rejestracji -->
+    <form id="registrationForm" action="/user/register" method="post">
+      <div class="form-group">
+        <!-- Imię -->
+        <label for="name">First Name:</label>
+        <input type="text" id="name" name="name" required>
+      </div>
 
-  <!-- Nazwisko -->
-  <label for="surname">Last Name:</label>
-  <input type="text" id="surname" name="surname" required>
+      <div class="form-group">
+        <!-- Nazwisko -->
+        <label for="surname">Last Name:</label>
+        <input type="text" id="surname" name="surname" required>
+      </div>
 
-  <!-- Email -->
-  <label for="email">Email:</label>
-  <input type="email" id="email" name="email" required>
+      <div class="form-group">
+        <!-- Email -->
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+      </div>
 
-  <!-- Hasło -->
-  <label for="password">Password:</label>
-  <input type="password" id="password" name="password" required>
+      <div class="form-group">
+        <!-- Hasło -->
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+      </div>
 
-  <!-- Przycisk rejestracji -->
-  <button type="submit">Register</button>
-</form>
+
+      <div class="form-group">
+        <!-- Przycisk rejestracji -->
+        <button type="submit" class="btn btn-primary">Register</button>
+      </div>
+
+    </form>
+  </div>
+
+</div>
+
 
 </body>
 </html>
