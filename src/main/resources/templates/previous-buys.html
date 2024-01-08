@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>Previous buys</title>
     <style>
         .description {
@@ -10,9 +11,10 @@
     </style>
 </head>
 <body>
+<div class="container">
     <h2>Your previous buys</h2>
-    <ul>
-        <li>
+    <ul class="list-group same-size">
+        <li class="list-group-item ">
             Buy 1
             <!-- Button to toggle the component -->
             <button class="toggleButton" data-target="buy1">Toggle description</button>
@@ -21,7 +23,7 @@
                 <p>Very nice product 5 stars</p>
             </div>
         </li>
-        <li>
+        <li class="list-group-item">
             Buy 2
             <!-- Button to toggle the component -->
             <button class="toggleButton" data-target="buy2">Toggle description</button>
@@ -31,6 +33,8 @@
             </div>
         </li>
     </ul>
+</div>
+
 
     <script>
         // JavaScript function to toggle the visibility of the component

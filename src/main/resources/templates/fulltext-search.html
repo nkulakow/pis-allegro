@@ -3,15 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Spring Boot HTML Form</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 <body>
+<div class="container py-3">
+    <form id="searchForm">
+        <div class="form-group">
+            <label for="inputData">Search for product:</label>
+            <input type="text" id="inputData" name="inputData">
+            <button class="btn btn-primary" type="button" onclick="submitForm()">Search</button>
+        </div>
 
-<form id="searchForm">
-    <label for="inputData">Search for product:</label>
-    <input type="text" id="inputData" name="inputData">
-    <button type="button" onclick="submitForm()">Search</button>
-</form>
+    </form>
+</div>
+
 
 <div id="search-result"></div>
 
