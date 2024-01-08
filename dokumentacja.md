@@ -68,7 +68,8 @@ CI zapewniona przez jenkinsa.
   - Nel Kułakowska : bazy danych, konfiguracja, szablon, produkty + kategorie + produkty w koszyku (po stronie backendu: serwisy itd.), testy jednostkowe
   - Marcin Wawrzyniak : interfejs graficzny, "implementacja architektury frontendu" (układ kontrolerów i html), Page Navigator, Product Controller
   - Mateusz Kiełbus : użytkownicy (po stronie backendu + user controller), mechanizm sesji
+  - Michał Jakomulski : intefej graficzny - bootstrap
 
 ## Commity
-![commits](images/commits.png)     
+![commits](images/commits_overview.png)     
 
