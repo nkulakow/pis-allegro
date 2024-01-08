@@ -15,7 +15,7 @@
     <div class="row">
     <form action="/hello" method="POST" enctype="multipart/form-data" id="productForm">
 
-            <h2>ADD PRODUCT</h2>
+            <h1>ADD PRODUCT</h1>
             <div class="form-group">
                 <label for="nameField">Add name</label>
                 <input class="form-control input-size"  name="name" id="nameField">
@@ -42,26 +42,34 @@
             <button class="btn btn-primary">Send!</button>
     </form>
     </div>
-
-    <h1>Database Information</h1>
+<div class="container">
+    <h1 class="py-2">Database Information</h1>
     <h2>Products in database:</h2>
     <p th:text="${info}"></p>
     <div>
         <h3>Search in databases</h3>
         <form action="/fulltext-search" method="GET" id="searchForm">
-            <label for="searchField">Search</label>
-            <input name="search" id="searchField">
-            <button>Search</button>
+            <div class="form-group">
+                <label for="searchField">Search</label>
+                <input class="form-control input-size" name="search" id="searchField">
+                <button class="btn btn-primary">Search</button>
+            </div>
+
         </form>
     </div>
     <div>
         <form action="/add-category" method="GET" id="addCategoryForm">
-            <h3>Add Category</h3>
-            <label for="catNameField">Add name</label>
-            <input name="name" id="catNameField">
-            <button>Send!</button>
+            <div class="form-group">
+                <h3>Add Category</h3>
+                <label for="catNameField">Add name</label>
+                <input class="form-control input-size" name="name" id="catNameField">
+                <button class="btn btn-primary">Send!</button>
+            </div>
+
         </form>
     </div>
+
+</div>
 
     <script>
         // Activate Select2 on the categoriesField
