@@ -7,45 +7,47 @@
   <title>Registration Form</title>
 </head>
 <body>
+<div class="container">
+  <h1>User Registration</h1>
 
-<h1>User Registration</h1>
+  <div class="row">
+    <div class="col-md-4">
+      <!-- Formularz rejestracji -->
+      <form id="registrationForm" action="/user/register" method="post">
+        <div class="form-group">
+          <!-- Imię -->
+          <label for="name">First Name:</label>
+          <input type="text" id="name" name="name" required>
+        </div>
 
-<div class="row">
-  <div class="col-md-4">
-    <!-- Formularz rejestracji -->
-    <form id="registrationForm" action="/user/register" method="post">
-      <div class="form-group">
-        <!-- Imię -->
-        <label for="name">First Name:</label>
-        <input type="text" id="name" name="name" required>
-      </div>
+        <div class="form-group">
+          <!-- Nazwisko -->
+          <label for="surname">Last Name:</label>
+          <input type="text" id="surname" name="surname" required>
+        </div>
 
-      <div class="form-group">
-        <!-- Nazwisko -->
-        <label for="surname">Last Name:</label>
-        <input type="text" id="surname" name="surname" required>
-      </div>
+        <div class="form-group">
+          <!-- Email -->
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" required>
+        </div>
 
-      <div class="form-group">
-        <!-- Email -->
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-      </div>
-
-      <div class="form-group">
-        <!-- Hasło -->
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-      </div>
+        <div class="form-group">
+          <!-- Hasło -->
+          <label for="password">Password:</label>
+          <input type="password" id="password" name="password" required>
+        </div>
 
 
-      <div class="form-group">
-        <!-- Przycisk rejestracji -->
-        <button type="submit" class="btn btn-primary">Register</button>
-      </div>
+        <div class="form-group">
+          <!-- Przycisk rejestracji -->
+          <button type="submit" class="btn btn-primary">Register</button>
+        </div>
 
-    </form>
-  </div>
+      </form>
+    </div>
+</div>
+
 
 </div>
 

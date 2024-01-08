@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="styles.css">
     <title>View all products</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
@@ -15,7 +14,7 @@
 
     <div class="form-group">
         <label for="categories">Select Categories:</label>
-        <select class="form-control input-size" id="categories" class="custom-select" multiple style="width: 300px">
+        <select id="categories" class="custom-select" multiple style="width: 300px">
         </select>
     </div>
         <button class="btn btn-primary" onclick="getProductsByCategories()">Get Products</button>
