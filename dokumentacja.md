@@ -73,3 +73,5 @@ CI zapewniona przez jenkinsa.
 ## Commity
 ![commits](images/commits_overview.png)     
 
+## Jira - backlog
+![jira](images/jira.png)   
